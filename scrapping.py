@@ -25,7 +25,7 @@ def get_products_from_market(market: Market):
     session = requests.Session()
     market_url = _build_market_url(market)
     session.get(market_url)
-    response = session.get(f"https://wsloja.ifood.com.br/ifood-ws-v3/v1/merchants/{market.id}/catalog?category_items_size=12", headers=headers)
+    response = session.get(f"https://wsloja.ifood.com.br/ifood-ws-v3/v1/merchants/{market.id}/catalog", headers=headers)
     return response
 
 def list_markets_in_city(city: str, state_acronym: str):
