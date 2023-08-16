@@ -1,44 +1,110 @@
-from bs4 import BeautifulSoup
-import requests
 import json
+import os
+import pickle
+import re
+import string
+from typing import List
+
+import requests
+import unidecode
+from bs4 import BeautifulSoup
+
+from dtypes import Market, Product
 
 BASIC_URL = "https://www.ifood.com.br/delivery"
 
 
-class Market:
-    city: str
-    slug_name: str
-    id: str
-    name: str
-    closed: bool
+def load_products_from_website(market: Market, save_locally: bool = False) -> List[Product]:
+    """Get the products list from a market
+    Args:
+        market: the market object
+        save_locally: if should save a copy of the data locally
+    Returns:
+        List, a list of the products from the given market
+    """
+    products = []
 
-    def __repr__(self) -> str:
-        return f"""
-        city: {self.city},
-        slug_name: {self.slug_name},
-        id: {self.id},
-        name: {self.name},
-        closed: {self.closed}"""
-
-
-def get_products_from_market(market: Market):
+    # Get the site response
     headers = _get_headers(market)
     session = requests.Session()
     market_url = _build_market_url(market)
     session.get(market_url)
     response = session.get(f"https://wsloja.ifood.com.br/ifood-ws-v3/v1/merchants/{market.id}/catalog", headers=headers)
-    return response
+
+    # Parse response
+    response_json = json.loads(response.text)
+    menu = response_json["data"]["menu"]
+
+    # Build the Product object
+    # The menu splits the products by category
+    for category_menu in menu:
+        category = category_menu["name"]
+        itens = category_menu["itens"]
+        for item in itens:
+            product = Product()
+            product.category = category
+            product.description = item.get("description")
+            product.details = item.get("details")
+            product.logoUrl = item.get("logoUrl")
+            product.needChoices = item.get("needChoices")
+            product.unitPrice = item.get("unitPrice")
+            product.unitMinPrice = item.get("unitMinPrice")
+            product.productTags = item.get("productTags")
+            product.additionalInfo = item.get("additionalInfo")
+            products.append(product)
+
+    # Save the data in a local file
+    products_file = f"{market.slug_name}.pickle"
+    if save_locally:
+        with open(products_file, "wb") as file:
+            pickle.dump(products, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return products
 
 
-def list_markets_in_city(city: str, state_acronym: str):
-    city_slug = f"{city.lower()}-{state_acronym.lower()}"
+def load_products_from_local_file(market: Market) -> List[Product]:
+    """Get the products list from a current file
+
+    Args:
+        market: the market object
+
+    Returns:
+        List, a list of the products from the given market
+    """
+    products_file = f"{market.slug_name}.pickle"
+    if os.path.exists(products_file):
+        with open(products_file, "rb") as handle:
+            return pickle.load(handle)
+    return None
+
+
+def list_markets_in_city(city: str, state_acronym: str) -> List[Market]:
+    """List all markets in the city
+    Args:
+    city: The city name E.g. "São José dos campos", "Brasília"
+    state_acronym: The state abreviation E.g. "SP", "sp", "RJ"
+
+    Returns:
+        List, a list of the markets in the city
+    """
+    # Check if the state acronym is in correct format
+    assert len(state_acronym) == 2
     markets = []
+
+    city = _normalize_name(city)
+    city = city.replace(" ", "-")
+    # Parsing to the url format
+    city_slug = f"{city}-{state_acronym.lower()}"
+    # Make the request
     response = requests.get(f"{BASIC_URL}/{city_slug}")
+
+    # Parse response
     soup = BeautifulSoup(response.text, "html.parser")
-    json_str = soup.find_all("script", {"type": "application/json"})[0].text
-    dic = json.loads(json_str)
-    restaurants_list = dic["props"]["initialState"]["restaurantsByCity"]["list"]
-    for company in restaurants_list:
+    text = soup.find("script", {"type": "application/json"}).text
+    data = json.loads(text)
+    companies = data["props"]["initialState"]["restaurantsByCity"]["list"]
+
+    for company in companies:
         if company["mainFoodType"]["name"] == "Mercado":
             market = Market()
             market.city = city_slug
@@ -51,10 +117,28 @@ def list_markets_in_city(city: str, state_acronym: str):
 
 
 def _build_market_url(market: Market):
+    """Build the url from market main page"""
     return f"{BASIC_URL}/{market.city}/{market.slug_name}/{market.id}"
 
 
+def _normalize_name(name: str) -> str:
+    """Normalize a string for the default pattern
+
+    Args:
+        name: the string to be normalized
+    Returns:
+        str, the normalized name
+    """
+    # Remove the punctuation from the string, replacing by a space (Multiple spaces are removed further)
+    name = unidecode.unidecode(name).translate(str.maketrans(string.punctuation, " " * len(string.punctuation)))
+    # Remove repeated spaces
+    name = re.sub(" +", " ", name)
+    name = name.lower().strip()
+    return name
+
+
 def _get_headers(market):
+    """Get the required headers to access ifood database"""
     return {
         "Access_key": "69f181d5-0046-4221-b7b2-deef62bd60d5",
         "authority": "wsloja.ifood.com.br",
