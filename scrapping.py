@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 from dtypes import Market, Product
 
 BASIC_URL = "https://www.ifood.com.br/delivery"
+## TODO: implement the exceptions handler
 
 
 def load_products_from_website(market: Market, save_locally: bool = False) -> List[Product]:
@@ -54,7 +55,7 @@ def load_products_from_website(market: Market, save_locally: bool = False) -> Li
             products.append(product)
 
     # Save the data in a local file
-    products_file = f"{market.slug_name}.pickle"
+    products_file = _get_market_local_file(market)
     if save_locally:
         with open(products_file, "wb") as file:
             pickle.dump(products, file, protocol=pickle.HIGHEST_PROTOCOL)
@@ -71,7 +72,7 @@ def load_products_from_local_file(market: Market) -> List[Product]:
     Returns:
         List, a list of the products from the given market
     """
-    products_file = f"{market.slug_name}.pickle"
+    products_file = _get_market_local_file(market)
     if os.path.exists(products_file):
         with open(products_file, "rb") as handle:
             return pickle.load(handle)
@@ -135,6 +136,10 @@ def _normalize_name(name: str) -> str:
     name = re.sub(" +", " ", name)
     name = name.lower().strip()
     return name
+
+
+def _get_market_local_file(market: Market):
+    return f"{market.slug_name}.pickle"
 
 
 def _get_headers(market):
