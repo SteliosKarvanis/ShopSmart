@@ -22,4 +22,15 @@ class Product:
     additionalInfo: str
     category: str
 
-    # TODO: do the __repr__
+    def __repr__(self) -> str:
+        return f"""
+            description: {self.description},
+            details: {self.details},
+            logoUrl: {self.logoUrl},
+            needChoices: {self.needChoices},
+            unitPrice: {self.unitPrice},
+            unitMinPrice: {self.unitMinPrice},
+            productTags: {self.productTags},
+            additionalInfo: {self.additionalInfo},
+            category: {self.category},
+        """
