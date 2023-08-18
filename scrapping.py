@@ -170,3 +170,22 @@ def _get_headers(market):
         "X-Ifood-Device-Id": "3019aba7-bae2-49c4-bf2d-2baa03055acd",
         "X-Ifood-Session-Id": "4b8d544f-c05a-4fdb-9d36-3e7be28cd5d3",
     }
+
+
+def generate_data_file(data: List[Product], filename: str) -> None:
+    """Generate a txt file with the data, writing in list format
+
+    Args:
+        data: a list of products with the data to be saved in the file
+        filename: the file to save the data
+    """
+    with open(filename, "w+") as f:
+        f.write("[")
+        for product in data:
+            name = product.description.replace('"', "")
+            p = {
+                "product": name,
+                "tags": [],
+            }
+            f.write(f"{repr(p)},\n")
+        f.write("]\n")
