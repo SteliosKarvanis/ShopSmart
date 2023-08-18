@@ -28,9 +28,9 @@ LABEL_COLORS = [
 
 
 class NERLabelingApp(QMainWindow):
-    def __init__(self, data_list: List):
+    def __init__(self):
         super().__init__()
-        self.data_list = data_list
+        self.data_list = self.read_data(DATA_FILE)
         self.selected_tags = []
         self.current_text_index = 0
         self.current_label_index = 0
@@ -60,12 +60,11 @@ class NERLabelingApp(QMainWindow):
         self.update_all()
 
     def _update_text(self):
-        self.text_view.setTextBackgroundColor(QColor("White"))
-        self.text_view.setPlainText(self.data_list[self.current_text_index])
+        self.text_view.setPlainText(self.data_list[self.current_text_index].get("product"))
 
     def _update_labels(self):
         text = ""
-        for tag in self.selected_tags:
+        for tag in self.data_list[self.current_text_index]["tags"] + self.selected_tags:
             tag_name = tag[0]
             name = self.text_view.toPlainText()[tag[1] : tag[2]]
             text += f"{tag_name} : {name}\n"
@@ -93,18 +92,21 @@ class NERLabelingApp(QMainWindow):
         format.setBackground(color)
         cursor.mergeCharFormat(format)
 
-    def save_data_action(self):  # TODO
-        selected_text = self.text_view.textCursor().selectedText()
-        selected_tags = [
-            self.labels_combo_box.itemText(i)
-            for i in range(self.labels_combo_box.count())
-            if self.labels_combo_box.itemText(i) in self.selected_tags
-        ]
+    def save_data_action(self):
+        self.data_list[self.current_text_index]["tags"] += self.selected_tags
+        self.selected_tags = []
+        self.save_to_file(DATA_FILE)
 
-        # Save or process the labeled data here
+    def save_to_file(self, file):
+        with open(file, "w+") as f:
+            f.write("[")
+            for product in self.data_list:
+                f.write(f"{repr(product)},\n")
+            f.write("]\n")
 
-        self.current_text_index += 1
-        self._update_text()
+    def clear_action(self):
+        self.data_list[self.current_text_index]["tags"] = []
+        self.reset_all()
 
     def change_current_label_action(self, event):
         self.current_label_index = self.labels_combo_box.currentIndex()
@@ -112,12 +114,17 @@ class NERLabelingApp(QMainWindow):
     def previous_text_action(self):
         self.current_text_index -= 1
         self.current_text_index = max(self.current_text_index, 0)
-        self.update_all()
+        self.reset_all()
 
     def next_text_action(self):
         self.current_text_index += 1
         self.current_text_index = min(self.current_text_index, len(self.data_list) - 1)
-        self.update_all()
+        self.reset_all()
+
+    def read_data(self, file):
+        with open(file, "r+") as f:
+            data_list = eval(f.read())
+        return data_list
 
     def _load_widgets(self):
         self.text_view = QTextEdit(self)
@@ -136,7 +143,7 @@ class NERLabelingApp(QMainWindow):
         self.save_button.clicked.connect(self.save_data_action)
 
         self.clear_button = QPushButton("Clear", self)
-        self.clear_button.clicked.connect(self.reset_all)
+        self.clear_button.clicked.connect(self.clear_action)
 
         self.next_button = QPushButton(">>", self)
         self.next_button.clicked.connect(self.next_text_action)
@@ -185,10 +192,7 @@ class NERLabelingApp(QMainWindow):
 
 
 if __name__ == "__main__":
-    with open(DATA_FILE) as json_file:
-        data_list = json.load(json_file)
-
     app = QApplication(sys.argv)
-    window = NERLabelingApp(data_list)
+    window = NERLabelingApp()
     window.show()
     sys.exit(app.exec_())
