@@ -1,6 +1,4 @@
 import sys
-import json
-from typing import List
 from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -16,7 +14,6 @@ from PyQt5.QtGui import QTextCharFormat, QColor
 from PyQt5.QtCore import Qt
 
 
-DATA_FILE = "data.json"
 LABELS = ["Produto", "Marca", "Tamanho", "Especificação"]
 
 LABEL_COLORS = [
@@ -28,9 +25,10 @@ LABEL_COLORS = [
 
 
 class NERLabelingApp(QMainWindow):
-    def __init__(self):
+    def __init__(self, file):
         super().__init__()
-        self.data_list = self.read_data(DATA_FILE)
+        self.file = file
+        self.data_list = self.read_data(file)
         self.selected_tags = []
         self.current_text_index = 0
         self.current_label_index = 0
@@ -95,7 +93,7 @@ class NERLabelingApp(QMainWindow):
     def save_data_action(self):
         self.data_list[self.current_text_index]["tags"] += self.selected_tags
         self.selected_tags = []
-        self.save_to_file(DATA_FILE)
+        self.save_to_file(self.file)
 
     def save_to_file(self, file):
         with open(file, "w+") as f:
@@ -193,6 +191,9 @@ class NERLabelingApp(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = NERLabelingApp()
+    for flag in sys.argv:
+        if flag.startswith("--data="):
+            file = flag.split("=")[-1]
+    window = NERLabelingApp(file)
     window.show()
     sys.exit(app.exec_())
