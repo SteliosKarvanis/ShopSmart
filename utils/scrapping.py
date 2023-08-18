@@ -9,7 +9,7 @@ import requests
 import unidecode
 from bs4 import BeautifulSoup
 
-from dtypes import Market, Product
+from utils.dtypes import Market, Product
 
 BASIC_URL = "https://www.ifood.com.br/delivery"
 ## TODO: implement the exceptions handler
