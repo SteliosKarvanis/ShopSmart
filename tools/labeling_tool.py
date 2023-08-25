@@ -14,12 +14,27 @@ from PyQt5.QtGui import QTextCharFormat, QColor
 from PyQt5.QtCore import Qt
 
 
-LABELS = ["Produto", "Marca", "Tamanho", "Especificação"]
+LABELS = [
+    "O",
+    "B-PRO",
+    "I-PRO",
+    "B-MAR",
+    "I-MAR",
+    "B-ESP",
+    "I-ESP",
+    "B-TAM",
+    "I-TAM",
+]
 
 LABEL_COLORS = [
+    QColor(255, 255, 255),  # Light Gray
+    QColor(200, 200, 200),  # Light Gray
     QColor(200, 200, 200),  # Light Gray
     QColor(144, 238, 144),  # Light Green
+    QColor(144, 238, 144),  # Light Green
     QColor(173, 216, 230),  # Light Blue
+    QColor(173, 216, 230),  # Light Blue
+    QColor(255, 255, 204),  # Light Yellow
     QColor(255, 255, 204),  # Light Yellow
 ]
 
@@ -58,6 +73,7 @@ class NERLabelingApp(QMainWindow):
         self.update_all()
 
     def _update_text(self):
+        self.text_view.setTextBackgroundColor(QColor("White"))
         self.text_view.setPlainText(self.data_list[self.current_text_index].get("product"))
 
     def _update_labels(self):
