@@ -40,10 +40,10 @@ LABEL_COLORS = [
 
 
 class NERLabelingApp(QMainWindow):
-    def __init__(self, file):
+    def __init__(self, file_data:str):
         super().__init__()
-        self.file = file
-        self.data_list = self.read_data(file)
+        self.file_data = file_data
+        self.data_list = self.read_data(file_data)
         self.selected_tags = []
         self.current_text_index = 0
         self.current_label_index = 0
@@ -109,10 +109,10 @@ class NERLabelingApp(QMainWindow):
     def save_data_action(self):
         self.data_list[self.current_text_index]["tags"] += self.selected_tags
         self.selected_tags = []
-        self.save_to_file(self.file)
+        self.save_to_file(self.file_data)
 
-    def save_to_file(self, file):
-        with open(file, "w+") as f:
+    def save_to_file(self, file_data):
+        with open(file_data, "w+") as f:
             f.write("[")
             for product in self.data_list:
                 f.write(f"{repr(product)},\n")
@@ -135,8 +135,8 @@ class NERLabelingApp(QMainWindow):
         self.current_text_index = min(self.current_text_index, len(self.data_list) - 1)
         self.reset_all()
 
-    def read_data(self, file):
-        with open(file, "r+") as f:
+    def read_data(self, file_data):
+        with open(file_data, "r+") as f:
             data_list = eval(f.read())
         return data_list
 
@@ -209,7 +209,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     for flag in sys.argv:
         if flag.startswith("--data="):
-            file = flag.split("=")[-1]
-    window = NERLabelingApp(file)
+            file_data = flag.split("=")[-1]
+    window = NERLabelingApp(file_data)
     window.show()
     sys.exit(app.exec_())
