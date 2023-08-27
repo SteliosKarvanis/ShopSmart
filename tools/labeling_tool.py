@@ -1,4 +1,5 @@
 import sys
+from typing import List
 from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -12,7 +13,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QTextCharFormat, QColor
 from PyQt5.QtCore import Qt
-
+from functools import partial
 
 LABELS = [
     "O",
@@ -37,26 +38,34 @@ LABEL_COLORS = [
     QColor(255, 255, 204),  # Light Yellow
     QColor(255, 255, 204),  # Light Yellow
 ]
+# TODO: move to a better file further
+def generate_tokens(name: str) -> List:
+    return name.strip().split(" ")
 
 
 class NERLabelingApp(QMainWindow):
-    def __init__(self, file_data:str):
+    def __init__(self, file_data: str):
         super().__init__()
         self.file_data = file_data
         self.data_list = self.read_data(file_data)
         self.selected_tags = []
         self.current_text_index = 0
         self.current_label_index = 0
+        self.current_word_index = 0
+        self.current_words = None
 
         # Widgtes
         self.text_view = None
+        self.word_view = None
         self.tags_view = None
-        self.labels_combo_box = None
         self.save_button = None
         self.clear_button = None
-        self.next_button = None
-        self.previous_button = None
+        self.next_text_button = None
+        self.previous_text_button = None
+        self.next_word_button = None
+        self.previous_word_button = None
         self.current_index_label = None
+        self.label_buttons = []
 
         self._load_widgets()
         self._load_layout()
@@ -64,17 +73,22 @@ class NERLabelingApp(QMainWindow):
 
     def update_all(self):
         self._update_text()
+        self._update_word()
         self._update_labels()
         self._update_index()
 
     def reset_all(self):
         self.selected_tags = []
-        self.labels_combo_box.setCurrentIndex(0)
         self.update_all()
 
     def _update_text(self):
-        self.text_view.setTextBackgroundColor(QColor("White"))
-        self.text_view.setPlainText(self.data_list[self.current_text_index].get("product"))
+        text = self.data_list[self.current_text_index].get("product")
+        self.current_word_index = 0
+        self.text_view.setPlainText(text)
+        self.current_words = generate_tokens(text)
+
+    def _update_word(self):
+        self.word_view.setPlainText(self.current_words[self.current_word_index])
 
     def _update_labels(self):
         text = ""
@@ -86,25 +100,6 @@ class NERLabelingApp(QMainWindow):
 
     def _update_index(self):
         self.current_index_label.setText(str(self.current_text_index))
-
-    def on_mouse_release(self, event):
-        selected_text = self.text_view.textCursor().selectedText()
-        start = self.text_view.textCursor().selectionStart()
-        end = self.text_view.textCursor().selectionEnd()
-        if selected_text:
-            tag = [LABELS[self.current_label_index], start, end]
-            if tag not in self.selected_tags:
-                self.selected_tags.append(tag)
-                self._update_labels()
-
-        # Highlight the selected text
-        self.highlight_selected_text(LABEL_COLORS[self.current_label_index])
-
-    def highlight_selected_text(self, color):
-        cursor = self.text_view.textCursor()
-        format = QTextCharFormat()
-        format.setBackground(color)
-        cursor.mergeCharFormat(format)
 
     def save_data_action(self):
         self.data_list[self.current_text_index]["tags"] += self.selected_tags
@@ -122,9 +117,6 @@ class NERLabelingApp(QMainWindow):
         self.data_list[self.current_text_index]["tags"] = []
         self.reset_all()
 
-    def change_current_label_action(self, event):
-        self.current_label_index = self.labels_combo_box.currentIndex()
-
     def previous_text_action(self):
         self.current_text_index -= 1
         self.current_text_index = max(self.current_text_index, 0)
@@ -134,6 +126,33 @@ class NERLabelingApp(QMainWindow):
         self.current_text_index += 1
         self.current_text_index = min(self.current_text_index, len(self.data_list) - 1)
         self.reset_all()
+
+    def previous_word_action(self):
+        self.current_word_index -= 1
+        self.current_word_index = max(self.current_word_index, 0)
+        self._update_word()
+
+    def next_word_action(self):
+        self.current_word_index += 1
+        self.current_word_index = min(self.current_word_index, len(self.current_words) - 1)
+        self._update_word()
+
+    def label_button_clicked(self, id):
+        text = self.data_list[self.current_text_index].get("product")
+        print(type(text))
+        word = self.current_words[self.current_word_index]
+        start = text.find(word)
+        end = start + len(word)
+        updated = False
+        for selected_tag in self.selected_tags:
+            if selected_tag[1] == start and selected_tag[2] == end:
+                selected_tag[0] = LABELS[id]
+                updated = True
+        tag = [LABELS[id], start, end]
+        if not updated and not tag in self.selected_tags:
+            self.selected_tags.append(tag)
+        self.next_word_action()
+        self._update_labels()
 
     def read_data(self, file_data):
         with open(file_data, "r+") as f:
@@ -145,12 +164,12 @@ class NERLabelingApp(QMainWindow):
         self.text_view.setFixedHeight(self.text_view.fontMetrics().height() + 10)
         self.text_view.setReadOnly(True)
 
+        self.word_view = QTextEdit(self)
+        self.word_view.setFixedHeight(self.word_view.fontMetrics().height() + 10)
+        self.word_view.setReadOnly(True)
+
         self.tags_view = QLabel(self)
         self.tags_view.setStyleSheet("background-color: lightblue;")
-
-        self.labels_combo_box = QComboBox(self)
-        self.labels_combo_box.addItems(LABELS)
-        self.labels_combo_box.currentIndexChanged.connect(self.change_current_label_action)
 
         # Buttons
         self.save_button = QPushButton("Save", self)
@@ -159,17 +178,25 @@ class NERLabelingApp(QMainWindow):
         self.clear_button = QPushButton("Clear", self)
         self.clear_button.clicked.connect(self.clear_action)
 
-        self.next_button = QPushButton(">>", self)
-        self.next_button.clicked.connect(self.next_text_action)
+        self.next_text_button = QPushButton(">>", self)
+        self.next_text_button.clicked.connect(self.next_text_action)
 
-        self.previous_button = QPushButton("<<", self)
-        self.previous_button.clicked.connect(self.previous_text_action)
+        self.previous_text_button = QPushButton("<<", self)
+        self.previous_text_button.clicked.connect(self.previous_text_action)
+
+        self.next_word_button = QPushButton(">", self)
+        self.next_word_button.clicked.connect(self.next_word_action)
+
+        self.previous_word_button = QPushButton("<", self)
+        self.previous_word_button.clicked.connect(self.previous_word_action)
 
         self.current_index_label = QLabel(self)
         self.current_index_label.setText("0")
         self.current_index_label.setAlignment(Qt.AlignCenter)
-
-        self.text_view.mouseReleaseEvent = self.on_mouse_release
+        for id, label in enumerate(LABELS):
+            button = QPushButton(label, self)
+            button.clicked.connect(partial(self.label_button_clicked, id))
+            self.label_buttons.append(button)
 
     def _load_layout(self):
         self.setWindowTitle("NER Labeling Interface")
@@ -183,19 +210,30 @@ class NERLabelingApp(QMainWindow):
         labels_tools_widget = QWidget()
         labels_tools_widget.setLayout(labels_handler_layout)
 
-        # The text handler (<<, index, >>)
-        text_handler_layour = QHBoxLayout()
-        text_handler_layour.addWidget(self.previous_button)
-        text_handler_layour.addWidget(self.current_index_label)
-        text_handler_layour.addWidget(self.next_button)
+        # Tags Buttons
+        tag_buttons_layout = QHBoxLayout()
+        for id in range(len(LABELS)):
+            tag_buttons_layout.addWidget(self.label_buttons[id])
+
+        tags_widget = QWidget()
+        tags_widget.setLayout(tag_buttons_layout)
+
+        # The text handler (<<, <, index, >, >>)
+        text_handler_layout = QHBoxLayout()
+        text_handler_layout.addWidget(self.previous_text_button)
+        text_handler_layout.addWidget(self.previous_word_button)
+        text_handler_layout.addWidget(self.current_index_label)
+        text_handler_layout.addWidget(self.next_word_button)
+        text_handler_layout.addWidget(self.next_text_button)
 
         text_tools_widget = QWidget()
-        text_tools_widget.setLayout(text_handler_layour)
+        text_tools_widget.setLayout(text_handler_layout)
 
         # Main Layoutw
         layout = QVBoxLayout()
         layout.addWidget(self.text_view)
-        layout.addWidget(self.labels_combo_box)
+        layout.addWidget(self.word_view)
+        layout.addWidget(tags_widget)
         layout.addWidget(self.tags_view)
         layout.addWidget(labels_tools_widget)
         layout.addWidget(text_tools_widget)

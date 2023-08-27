@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class Market:
     city: str = ""
@@ -7,6 +8,7 @@ class Market:
     id: str = ""
     name: str = ""
     closed: bool = True
+
 
 @dataclass
 class Product:
