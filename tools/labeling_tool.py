@@ -139,7 +139,6 @@ class NERLabelingApp(QMainWindow):
 
     def label_button_clicked(self, id):
         text = self.data_list[self.current_text_index].get("product")
-        print(type(text))
         word = self.current_words[self.current_word_index]
         start = text.find(word)
         end = start + len(word)
