@@ -1,17 +1,12 @@
 import sys
-from typing import List
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QTextEdit,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-    QLabel,
-    QHBoxLayout,
-)
-from PyQt5.QtCore import Qt
 from functools import partial
+from typing import List
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import (QAction, QApplication, QHBoxLayout, QLabel,
+                             QMainWindow, QPushButton, QShortcut, QTextEdit,
+                             QVBoxLayout, QWidget)
 
 LABELS = [
     "O",
@@ -55,7 +50,10 @@ class NERLabelingApp(QMainWindow):
         self.previous_word_button = None
         self.current_index_label = None
         self.label_buttons = []
-
+        
+        self.current_button_index = 0
+        
+        self.create_actions()
         self._load_widgets()
         self._load_layout()
         self.update_all()
@@ -185,6 +183,7 @@ class NERLabelingApp(QMainWindow):
             button = QPushButton(label, self)
             button.clicked.connect(partial(self.label_button_clicked, id))
             self.label_buttons.append(button)
+        self.label_buttons[self.current_button_index].setFocus()
 
     def _load_layout(self):
         self.setWindowTitle("NER Labeling Interface")
@@ -229,7 +228,57 @@ class NERLabelingApp(QMainWindow):
         central_widget = QWidget()
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
+    
+    def create_actions(self):
+        # Actions
+        go_to_next_text = QAction('Next Text', self)
+        go_to_previous_text = QAction('Previous Text', self)
+        save_action = QAction('Save', self)
+        clear_action = QAction('Clear', self)
+        next_button = QAction('Button next', self)
+        previous_button = QAction('Button previous', self)
+        click_button = QAction("Click Button", self)
 
+        go_to_next_text.setShortcut(QKeySequence(Qt.Key_Right))
+        go_to_previous_text.setShortcut(QKeySequence(Qt.Key_Left))
+        save_action.setShortcut(QKeySequence(Qt.Key_S))
+        clear_action.setShortcut(QKeySequence(Qt.Key_C))
+        next_button.setShortcut(QKeySequence(Qt.Key_D))
+        previous_button.setShortcut(QKeySequence(Qt.Key_A))
+        click_button.setShortcut(QKeySequence(Qt.Key_W))
+
+        # Connect the action to a slot (function)
+        go_to_next_text.triggered.connect(self.next_text_action)
+        go_to_previous_text.triggered.connect(self.previous_text_action)
+        save_action.triggered.connect(self.save_data_action)
+        clear_action.triggered.connect(self.clear_action)
+        next_button.triggered.connect(self.next_button_action)
+        previous_button.triggered.connect(self.previous_button_action)
+        click_button.triggered.connect(self.click_button_action)
+
+        # Add the action to the main window
+        self.addAction(go_to_next_text)
+        self.addAction(go_to_previous_text)
+        self.addAction(save_action)
+        self.addAction(clear_action)
+        self.addAction(next_button)
+        self.addAction(previous_button)
+        self.addAction(click_button)
+
+    def next_button_action(self):
+        self.current_button_index = (self.current_button_index + 1) % len(self.label_buttons)
+        self.label_buttons[self.current_button_index].setFocus()
+        for button in self.label_buttons:
+            button.setStyleSheet("")  # Reset style for all buttons
+        self.label_buttons[self.current_button_index].setStyleSheet("background-color: yellow;")
+    def previous_button_action(self):
+        self.current_button_index = (self.current_button_index - 1) % len(self.label_buttons)
+        self.label_buttons[self.current_button_index].setFocus()
+        for button in self.label_buttons:
+            button.setStyleSheet("")  # Reset style for all buttons
+        self.label_buttons[self.current_button_index].setStyleSheet("background-color: yellow;")
+    def click_button_action(self):
+        self.label_buttons[self.current_button_index].click()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
