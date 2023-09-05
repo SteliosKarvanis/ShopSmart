@@ -8,10 +8,8 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QLabel,
-    QComboBox,
     QHBoxLayout,
 )
-from PyQt5.QtGui import QTextCharFormat, QColor
 from PyQt5.QtCore import Qt
 from functools import partial
 
@@ -25,19 +23,10 @@ LABELS = [
     "I-ESP",
     "B-TAM",
     "I-TAM",
+    "B-QUA",
+    "I-QUA",
 ]
 
-LABEL_COLORS = [
-    QColor(255, 255, 255),  # Light Gray
-    QColor(200, 200, 200),  # Light Gray
-    QColor(200, 200, 200),  # Light Gray
-    QColor(144, 238, 144),  # Light Green
-    QColor(144, 238, 144),  # Light Green
-    QColor(173, 216, 230),  # Light Blue
-    QColor(173, 216, 230),  # Light Blue
-    QColor(255, 255, 204),  # Light Yellow
-    QColor(255, 255, 204),  # Light Yellow
-]
 # TODO: move to a better file further
 def generate_tokens(name: str) -> List:
     return name.strip().split(" ")
