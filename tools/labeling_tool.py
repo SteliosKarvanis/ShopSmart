@@ -134,8 +134,11 @@ class NERLabelingApp(QMainWindow):
 
     def label_button_clicked(self, id):
         text = self.data_list[self.current_text_index].get("product")
+        start = 0
+        for idx in range(self.current_word_index):
+            word = self.current_words[idx]
+            start += len(word) + 1
         word = self.current_words[self.current_word_index]
-        start = text.find(word)
         end = start + len(word)
         updated = False
         for selected_tag in self.selected_tags:
