@@ -4,21 +4,29 @@ from typing import List
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import (QAction, QApplication, QHBoxLayout, QLabel,
-                             QMainWindow, QPushButton, QShortcut, QTextEdit,
-                             QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (
+    QAction,
+    QApplication,
+    QHBoxLayout,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
 
 LABELS = [
     "O",
     "B-PRO",
-    "I-PRO",
     "B-MAR",
-    "I-MAR",
     "B-ESP",
-    "I-ESP",
     "B-TAM",
-    "I-TAM",
     "B-QUA",
+    "I-PRO",
+    "I-MAR",
+    "I-ESP",
+    "I-TAM",
     "I-QUA",
 ]
 
@@ -36,6 +44,7 @@ class NERLabelingApp(QMainWindow):
         self.current_text_index = 0
         self.current_label_index = 0
         self.current_word_index = 0
+        self.current_button_index = 0
         self.current_words = None
 
         # Widgtes
@@ -50,9 +59,8 @@ class NERLabelingApp(QMainWindow):
         self.previous_word_button = None
         self.current_index_label = None
         self.label_buttons = []
-        
-        self.current_button_index = 0
-        
+
+        self.print_shortkeys()
         self.create_actions()
         self._load_widgets()
         self._load_layout()
@@ -198,13 +206,19 @@ class NERLabelingApp(QMainWindow):
         labels_tools_widget.setLayout(labels_handler_layout)
 
         # Tags Buttons
+        tag_buttons_intermediate_layout = QHBoxLayout()
         tag_buttons_layout = QHBoxLayout()
-        for id in range(len(LABELS)):
-            tag_buttons_layout.addWidget(self.label_buttons[id])
+        intermediate_buttons = [x for x in self.label_buttons if x.text().startswith("I-")]
+        for button in self.label_buttons:
+            if button in intermediate_buttons:
+                tag_buttons_intermediate_layout.addWidget(button)
+            else:
+                tag_buttons_layout.addWidget(button)
 
         tags_widget = QWidget()
         tags_widget.setLayout(tag_buttons_layout)
-
+        tags_intermediate_widget = QWidget()
+        tags_intermediate_widget.setLayout(tag_buttons_intermediate_layout)
         # The text handler (<<, <, index, >, >>)
         text_handler_layout = QHBoxLayout()
         text_handler_layout.addWidget(self.previous_text_button)
@@ -221,6 +235,7 @@ class NERLabelingApp(QMainWindow):
         layout.addWidget(self.text_view)
         layout.addWidget(self.word_view)
         layout.addWidget(tags_widget)
+        layout.addWidget(tags_intermediate_widget)
         layout.addWidget(self.tags_view)
         layout.addWidget(labels_tools_widget)
         layout.addWidget(text_tools_widget)
@@ -228,15 +243,15 @@ class NERLabelingApp(QMainWindow):
         central_widget = QWidget()
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
-    
+
     def create_actions(self):
         # Actions
-        go_to_next_text = QAction('Next Text', self)
-        go_to_previous_text = QAction('Previous Text', self)
-        save_action = QAction('Save', self)
-        clear_action = QAction('Clear', self)
-        next_button = QAction('Button next', self)
-        previous_button = QAction('Button previous', self)
+        go_to_next_text = QAction("Next Text", self)
+        go_to_previous_text = QAction("Previous Text", self)
+        save_action = QAction("Save", self)
+        clear_action = QAction("Clear", self)
+        next_button = QAction("Button next", self)
+        previous_button = QAction("Button previous", self)
         click_button = QAction("Click Button", self)
 
         go_to_next_text.setShortcut(QKeySequence(Qt.Key_Right))
@@ -267,18 +282,33 @@ class NERLabelingApp(QMainWindow):
 
     def next_button_action(self):
         self.current_button_index = (self.current_button_index + 1) % len(self.label_buttons)
-        self.label_buttons[self.current_button_index].setFocus()
-        for button in self.label_buttons:
-            button.setStyleSheet("")  # Reset style for all buttons
-        self.label_buttons[self.current_button_index].setStyleSheet("background-color: yellow;")
+        self.update_selected_button_color()
+
     def previous_button_action(self):
         self.current_button_index = (self.current_button_index - 1) % len(self.label_buttons)
+        self.update_selected_button_color()
+
+    def update_selected_button_color(self):
         self.label_buttons[self.current_button_index].setFocus()
         for button in self.label_buttons:
             button.setStyleSheet("")  # Reset style for all buttons
         self.label_buttons[self.current_button_index].setStyleSheet("background-color: yellow;")
+
     def click_button_action(self):
         self.label_buttons[self.current_button_index].click()
+
+    def print_shortkeys(self):
+        text = f"""Shortkeys:
+        a: previous tag
+        d: next tag
+        w: click selected button
+        s: save
+        c: clear
+        left arrow: previous word
+        right arrow: next word
+        """
+        print(text)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
