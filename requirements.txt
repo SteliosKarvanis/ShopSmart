@@ -3,3 +3,4 @@ beautifulsoup4
 black
 Unidecode
 PyQt5
+spacy
