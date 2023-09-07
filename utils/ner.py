@@ -44,6 +44,7 @@ class NERModel:
         doc = self.model(text)
         entities = [(e.text, e.label_) for e in doc.ents]
         for value, tag in entities:
+            # Ignore O tag
             if tag == "O":
                 continue
             # If no tag field, create it
