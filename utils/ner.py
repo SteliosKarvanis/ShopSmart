@@ -5,6 +5,14 @@ import spacy
 # No fine-tunned model
 DEFAULT_MODEL = "pt_core_news_lg"
 
+LEBELS_TO_FEATURES = {
+    "O":"O",
+    "B-PRO":"product",
+    "B-MAR":"brand",
+    "B-ESP":"features",
+    "B-TAM":"size",
+    "B-QUA":"quantity",
+}
 
 class NERModel:
     """This class encapsulates all functionalities to load and use a NER model
@@ -44,6 +52,8 @@ class NERModel:
         doc = self.model(text)
         entities = [(e.text, e.label_) for e in doc.ents]
         for value, tag in entities:
+            if LEBELS_TO_FEATURES.get(tag):
+                tag = LEBELS_TO_FEATURES[tag]
             # Ignore O tag
             if tag == "O":
                 continue
