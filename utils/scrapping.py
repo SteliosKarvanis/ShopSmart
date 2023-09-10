@@ -145,7 +145,7 @@ def _get_market_local_file(market: Market):
 def _get_headers(market):
     """Get the required headers to access ifood database"""
     return {
-        "Access_key": "69f181d5-0046-4221-b7b2-deef62bd60d5",
+        "Access_key": "########",
         "authority": "wsloja.ifood.com.br",
         "method": "GET",
         "path": f"/ifood-ws-v3/v1/merchants/{market.id}/catalog?category_items_size=12",
@@ -164,11 +164,11 @@ def _get_headers(market):
         "Sec-Fetch-Dest": "empty",
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
-        "Secret_key": "9ef4fb4f-7a1d-4e0d-a9b1-9b82873297d8",
+        "Secret_key": "########",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
         "X-Device-Model": "Linux Chrome",
-        "X-Ifood-Device-Id": "3019aba7-bae2-49c4-bf2d-2baa03055acd",
-        "X-Ifood-Session-Id": "4b8d544f-c05a-4fdb-9d36-3e7be28cd5d3",
+        "X-Ifood-Device-Id": "########",
+        "X-Ifood-Session-Id": "########",
     }
 
 
