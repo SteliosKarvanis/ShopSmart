@@ -4,3 +4,4 @@ black
 Unidecode
 PyQt5
 spacy
+tqdm
