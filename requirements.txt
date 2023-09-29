@@ -5,3 +5,6 @@ Unidecode
 PyQt5
 spacy
 tqdm
+thefuzz
+seaborn
+numpy
