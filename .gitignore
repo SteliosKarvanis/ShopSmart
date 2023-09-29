@@ -1,3 +1,5 @@
 *__pycache__
 *.pickle
 ner_v0/
+data/raw/
+data/tagged/
