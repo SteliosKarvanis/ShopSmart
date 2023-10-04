@@ -23,6 +23,7 @@ CREATE TABLE TIPO_PRODUTO (
     tp_id UUID PRIMARY KEY,
     nome_do_tipo VARCHAR(128),
     marca VARCHAR(64),
+    quantidade SMALLINT,
     dim_id UUID,
     detalhes VARCHAR(256),
     FOREIGN KEY (dim_id) REFERENCES TIPO_DIMENSAO(dim_id),
@@ -39,13 +40,13 @@ CREATE TABLE UNIDADES_SI (
     unidade_si VARCHAR(16) PRIMARY KEY
 );
 
-CREATE TABLE TAG(
-    tag_id UUID PRIMARY KEY,
-    tag_key VARCHAR(32),
-    tag_value VARCHAR(128),
-    tp_id UUID,
-    FOREIGN KEY (tp_id) REFERENCES TIPO_PRODUTO(tp_id),
-);
+-- CREATE TABLE TAG(
+--     tag_id UUID PRIMARY KEY,
+--     tag_key VARCHAR(32),
+--     tag_value VARCHAR(128),
+--     tp_id UUID,
+--     FOREIGN KEY (tp_id) REFERENCES TIPO_PRODUTO(tp_id),
+-- );
 
 CREATE TABLE ESPECIFICACAO(
     espec_id UUID PRIMARY KEY,
