@@ -35,6 +35,7 @@ cd interface
 ```bash
 git clone https://github.com/SteliosKarvanis/ShopSmart
 ```
+
 ```bash
 git checkout frontend/b
 ```
@@ -49,6 +50,7 @@ npx expo install react-native-web@~0.19.6 react-dom@18.2.0
 npm install react-native-screens react-native-safe-area-context
 npm install @react-navigation/native
 npm install @react-navigation/stack
+npx expo install --fix
 ```
 
 ### Run interface
