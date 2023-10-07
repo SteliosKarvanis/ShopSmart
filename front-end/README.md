@@ -50,6 +50,7 @@ npx expo install react-native-web@~0.19.6 react-dom@18.2.0
 npm install react-native-screens react-native-safe-area-context
 npm install @react-navigation/native
 npm install @react-navigation/stack
+npm install react-native-vector-icons --save
 npx expo install --fix
 ```
 

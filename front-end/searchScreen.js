@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './styles';
+import SearchBarWithOptions from './searchBar';
 import { View, TextInput, Text, StyleSheet, Button,Pressable } from 'react-native';
 import { Ionicons,  MaterialIcons, AntDesign  } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -49,10 +50,11 @@ const SearchScreen = () => {
                     Veja as melhores opções
                 </Text>
             </View>
-         </View>
+
+        </View>
+
+        <SearchBarWithOptions /> {/* Render the SearchBarWithOptions component */}
         
-        <input type='text' style={styles.searchbar}/>
-  
         <View style={styles.buttonBoxLeft1}>
                 <Ionicons name="search" size={20} color="black" />
                 <Text style={styles.text}>

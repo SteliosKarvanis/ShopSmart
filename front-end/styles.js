@@ -1,5 +1,15 @@
 const styles = {
-
+    option: {
+      flex: 1, // para alinhar o ícone e a caixa de texto na mesma linha
+      alignItems: 'center', // para centralizar verticalmente
+      justifyContent: 'flex-start',
+      borderRadius: 10,
+      borderWidth: 1,
+      height: 800,
+      width: 300,
+      backgroundColor: 'lightgrey',
+      fontSize: 15,
+    },
     buttonBoxRight1: {
       position: 'absolute',
       bottom: 20,
@@ -79,12 +89,24 @@ const styles = {
         width: 150,
         left: 30
       },
+    textsearchbar:{
+      fontSize: 15,
+      marginBottom: 0,
+      fontFamily: 'Lucida Grande',
+      paddingHorizontal: 10,
+      height: 40, 
+      width: 300
+    },
   
     searchbar: {
       width: 350,
       height: 40,
       borderRadius: 20,
-      backgroundColor: 'lightgreen',
+      backgroundColor: 'lightgrey',
+      borderWidth: 1,
+      paddingHorizontal: 15,
+      flexDirection: 'row', 
+      alignItems: 'center'
     },
     border : {
       borderWidth: 1, // Largura da borda

@@ -3,6 +3,7 @@ import styles from './styles';
 import { View, TextInput, Text, StyleSheet, Button, Pressable} from 'react-native';
 import { Ionicons,  MaterialIcons, AntDesign  } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import ButtonList from './ButtonList';
 
 const ListScreen = () => {
     const navigation = useNavigation();
@@ -39,11 +40,8 @@ const ListScreen = () => {
         <Text style={styles.text}>Busca</Text>
         </Pressable>
 
-        <Pressable style={styles.buttonToOptions} onPress={() => navigation.navigate('OptionsScreen')}>
-        <Text style={styles.text}>Quero comprar barato</Text>
-        <Ionicons name="star" size={20} color="black" />
-        </Pressable>
-
+        
+        <ButtonList />
      
        
     </View>
