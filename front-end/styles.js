@@ -52,7 +52,7 @@ const styles = {
         position: 'absolute',
         bottom: 100,
         width: '100%',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
         backgroundColor: 'lightgreen',
@@ -103,12 +103,13 @@ const styles = {
         left: 30
       },
     textsearchbar:{
+      borderColor: 'transparent',
       fontSize: 15,
-      marginBottom: 0,
       fontFamily: 'Lucida Grande',
       paddingHorizontal: 35,
       height: 40, 
-      width: 300
+      width: 300,
+      borderWidth: 0
     },
   
     searchbar: {

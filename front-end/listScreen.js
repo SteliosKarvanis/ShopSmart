@@ -1,51 +1,62 @@
 import React from 'react';
 import styles from './styles';
-import { View, TextInput, Text, StyleSheet, Button, Pressable} from 'react-native';
-import { Ionicons,  MaterialIcons, AntDesign  } from '@expo/vector-icons';
+import { View,Text, Pressable,FlatList,  TouchableOpacity, ScrollView  } from 'react-native';
+import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import ButtonList from './ButtonList';
+import Title from './title';
+import { useGlobalContext } from './context';
 
-const ListScreen = () => {
-    const navigation = useNavigation();
+function ListScreen(){
+    const navigation = useNavigation(); 
+
+    const { list,toggleSelection } = useGlobalContext();
     return (
-    <View style={styles.container}>
-        <View style={styles.titleBox}>
-            <MaterialIcons name="shopping-cart" size={80} color="lightgreen"/>
-                <View style={styles.titleText}>
-                    <Text style={styles.title}> 
-                        ShopSmart
-                    </Text>
-                    <Text style={styles.subtitle}>     
-                        Comprando com sabedoria
-                    </Text>
-                </View>
-        </View>
-        
-        <View style={styles.border2}>
-            <Text style={styles.title}> 
-                        Minha Lista
-                    </Text>
-        </View>
+        <View style={styles.container}>
+            <Title/>
 
-        <View style={styles.buttonBoxRight2}>
+            <ScrollView>
+          {
+            <FlatList
+              data={list}
+              renderItem={({ item }) => (
+                <View style={styles.option}>
+                  <Text >
+                    {item}
+                  </Text>
+                  <TouchableOpacity style={styles.plus} onPress={() => (null)}>
+                    <Ionicons name="remove-circle-outline"  size={20} color="black" />
+                  </TouchableOpacity>
+                </View>
+              )}
+              style={{ height: 200, overflow: 'scroll' }}
+              keyExtractor={(item) => item}
+            />}
+
+
+
+        </ScrollView>
+
+
+            <View style={styles.buttonBoxRight2}>
                 <AntDesign name="bars" size={20} color="black" />
-                
-                <Text style={styles.text}>
+
+                <Text >
                     Lista
                 </Text>
-        </View>
-    
-        <Pressable style={styles.buttonBoxLeft2} onPress={() => navigation.navigate('Home')}>
-        <Ionicons name="search" size={20} color="black" />
-        <Text style={styles.text}>Busca</Text>
-        </Pressable>
+            </View>
 
-        
-        <ButtonList />
-     
-       
-    </View>
+            <Pressable style={styles.buttonBoxLeft2} onPress={() => navigation.navigate('Home')}>
+                <Ionicons name="search" size={20} color="black" />
+                <Text >Busca</Text>
+            </Pressable>
+
+
+            <ButtonList />
+
+
+        </View>
     );
-  };
+};
 
 export default ListScreen;

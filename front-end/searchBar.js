@@ -4,15 +4,14 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import Tutorial from './tutorial';
+import { useGlobalContext } from './context';
 
-const SearchBarWithOptions = () => {
+function SearchBarWithOptions() {
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [showList, setShowList] = useState(false);
-  //const [validOptions, setValidOptions] = useState([]);
-
   // Simulated list of options for demonstration
+  const { list, toggleSelection } = useGlobalContext();
   const allOptions = [
     'Apple',
     'Banana',
@@ -42,10 +41,6 @@ const SearchBarWithOptions = () => {
     filterOptions(text);
   };
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-    setSearchText(option); // Set the selected option as the search text
-  };
 
   const handleKeyPress = (e) => {
     if (e.nativeEvent.key === 'Enter') {
@@ -55,10 +50,15 @@ const SearchBarWithOptions = () => {
     }
   };
 
+  {/* <Text>Selected Options:</Text>
+          {list.length>0 && list.map((selectedOption) => (
+            <Text key={selectedOption}>{selectedOption}</Text>
+          ))} */}
+
   return (
     <View >
       <View style={styles.searchbar}>
-        
+
         <Icon name="search" size={20} color="black" style={styles.lupa} /> {/* Ícone de lupa */}
         <TextInput
           style={styles.textsearchbar}
@@ -67,8 +67,8 @@ const SearchBarWithOptions = () => {
           onKeyPress={handleKeyPress}
           value={searchText}
         />
-        <TouchableOpacity style={styles.plus} onPress={() => handleOptionSelect(item)}>
-                    <Ionicons name="ios-location-sharp" size={20} color="black" />
+        <TouchableOpacity style={styles.plus} onPress={() => (null)}>
+          <Ionicons name="ios-location-sharp" size={20} color="black" />
         </TouchableOpacity>
 
       </View>
@@ -83,7 +83,7 @@ const SearchBarWithOptions = () => {
                   <Text >
                     {item}
                   </Text>
-                  <TouchableOpacity style={styles.plus} onPress={() => handleOptionSelect(item)}>
+                  <TouchableOpacity style={styles.plus} onPress={() => toggleSelection(item)}>
                     <Ionicons name="add" size={20} color="black" />
                   </TouchableOpacity>
                 </View>
@@ -91,9 +91,7 @@ const SearchBarWithOptions = () => {
               style={{ height: 200, overflow: 'scroll' }}
               keyExtractor={(item) => item}
             />}
-          {selectedOption && (
-            <Text>Selected Option: {selectedOption}</Text>
-          )}
+
 
 
         </ScrollView>
