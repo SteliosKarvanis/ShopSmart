@@ -36,7 +36,7 @@ cd interface
 git clone https://github.com/SteliosKarvanis/ShopSmart
 ```
 ```bash
-git checkout front-end-new
+git checkout frontend/b
 ```
 
 ### Install requirements
