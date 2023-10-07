@@ -1,75 +1,34 @@
 import React from 'react';
 import styles from './styles';
 import SearchBarWithOptions from './searchBar';
-import { View, TextInput, Text, StyleSheet, Button,Pressable } from 'react-native';
-import { Ionicons,  MaterialIcons, AntDesign  } from '@expo/vector-icons';
+import { View, TextInput, Text, StyleSheet, Button, Pressable } from 'react-native';
+import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-
+import Title from './title';
 const SearchScreen = () => {
     const navigation = useNavigation();
     return (
-      <View style={styles.container}>
-  
-        <View style={styles.titleBox}>
-          <MaterialIcons name="shopping-cart" size={80} color="lightgreen" />
-            <View style={styles.titleText}>
-                <Text style={styles.title}> 
-                     ShopSmart
-                </Text>
-                <Text style={styles.subtitle}>     
-                    Comprando com sabedoria
-                </Text>
-            </View>
-        </View>
-  
-        <View style={styles.border}>
-            <View style={styles.box}>
-                <Ionicons name="ios-location-sharp" size={20} color="lightgreen" />
-                <Text style={styles.text}>
-                     Informe seu local 
-                </Text>
-            </View>
-            
-            <View style={styles.box}>
-                <Ionicons name="add" size={20} color="lightgreen" />
-                <Text style={styles.text}>
-                     Busque e adicione seus produtos
-                </Text>
-            </View>
-  
-            <View style={styles.box}>
-                <AntDesign name="bars" size={20} color="lightgreen" />
-                <Text style={styles.text}>
-                     Vá para sua lista de compras
-                </Text>
-            </View>
-            
-            <View style={styles.box}>
-                <AntDesign name="star" size={20} color="lightgreen" />
-                <Text style={styles.text}>
-                    Veja as melhores opções
-                </Text>
-            </View>
+        <View style={styles.container}>
 
-        </View>
+            <Title />
 
-        <SearchBarWithOptions /> {/* Render the SearchBarWithOptions component */}
-        
-        <View style={styles.buttonBoxLeft1}>
+            <SearchBarWithOptions /> {/* Render the SearchBarWithOptions component */}
+
+            <View style={styles.buttonBoxLeft1}>
                 <Ionicons name="search" size={20} color="black" />
-                <Text style={styles.text}>
+                <Text>
                     Busca
                 </Text>
-        </View>
-  
-                
-        <Pressable style={styles.buttonBoxRight1} onPress={() => navigation.navigate('ListScreen')}>
-        <AntDesign name="bars" size={20} color="black" />
-            <Text style={styles.text}>Lista</Text>
+            </View>
+
+
+            <Pressable style={styles.buttonBoxRight1} onPress={() => navigation.navigate('ListScreen')}>
+                <AntDesign name="bars" size={20} color="black" />
+                <Text >Lista</Text>
             </Pressable>
-        
-         
-      </View>
+
+
+        </View>
     );
 };
 

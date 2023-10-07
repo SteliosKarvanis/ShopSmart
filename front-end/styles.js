@@ -1,14 +1,27 @@
 const styles = {
+    lupa: {
+      position: 'absolute',
+      left: 10
+    },
+    plus: {
+      backgroundColor: 'lightgrey',
+      position: 'absolute',
+      right: 10
+    },
     option: {
+      paddingHorizontal: 15,
+      flexDirection: 'row', 
+      alignItems: 'center',
       flex: 1, // para alinhar o ícone e a caixa de texto na mesma linha
-      alignItems: 'center', // para centralizar verticalmente
       justifyContent: 'flex-start',
-      borderRadius: 10,
+      borderRadius: 15,
       borderWidth: 1,
-      height: 800,
-      width: 300,
+      height: 80,
+      width: 350,
       backgroundColor: 'lightgrey',
       fontSize: 15,
+      paddingVertical: 16,
+      margin: 8
     },
     buttonBoxRight1: {
       position: 'absolute',
@@ -93,7 +106,7 @@ const styles = {
       fontSize: 15,
       marginBottom: 0,
       fontFamily: 'Lucida Grande',
-      paddingHorizontal: 10,
+      paddingHorizontal: 35,
       height: 40, 
       width: 300
     },
@@ -104,18 +117,18 @@ const styles = {
       borderRadius: 20,
       backgroundColor: 'lightgrey',
       borderWidth: 1,
-      paddingHorizontal: 15,
       flexDirection: 'row', 
-      alignItems: 'center'
+      alignItems: 'center',
+      margin: 8,
     },
     border : {
       borderWidth: 1, // Largura da borda
       borderColor: 'black',
       borderRadius: 10, // para alinhar o ícone e a caixa de texto na mesma linha
-      alignItems: 'center', // para centralizar verticalmente
+      //alignItems: 'center', // para centralizar verticalmente
       height: 130,
       width: 350,
-      marginBottom: 30
+      margin: 8
     },
 
     border2 : {
@@ -164,12 +177,14 @@ const styles = {
     box: {
       flexDirection: 'row', // para alinhar o ícone e a caixa de texto na mesma linha
       alignItems: 'center', // para centralizar verticalmente
-      justifyContent: 'left',
+      //justifyContent: 'left',
       height: 30,
-      width: '100%',
-      paddingHorizontal: 40
+      //width: '100%',
+      //paddingHorizontal: 40
+
     },
     text: {
+      left:15,
       fontSize: 18,
       marginBottom: 0,
       fontFamily: 'Lucida Grande'

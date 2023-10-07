@@ -10,7 +10,7 @@ const ListScreen = () => {
     return (
     <View style={styles.container}>
         <View style={styles.titleBox}>
-            <MaterialIcons name="shopping-cart" size={80} color="lightgreen" />
+            <MaterialIcons name="shopping-cart" size={80} color="lightgreen"/>
                 <View style={styles.titleText}>
                     <Text style={styles.title}> 
                         ShopSmart
