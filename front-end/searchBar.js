@@ -51,7 +51,7 @@ const SearchBarWithOptions = () => {
       setSearchText('');
     }
   };
-  console.log(allOptions.length);
+  
   return (
     <View>
         <View style={styles.searchbar}>

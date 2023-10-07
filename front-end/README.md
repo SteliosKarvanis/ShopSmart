@@ -59,3 +59,9 @@ npx expo install --fix
 ```bash
 npm start
 ```
+
+### Simulator extection
+
+```bash
+https://chrome.google.com/webstore/detail/mobile-simulator-responsi/ckejmhbmlajgoklhgbapkiccekfoccmk/related?hl=fr
+```
