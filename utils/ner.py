@@ -40,4 +40,18 @@ class NERModel:
         Returns:
             Dict, a dict containing the original text, and the tags
         """
-        pass
+        # Extract Tags
+        tags = {}
+        tags = self.model(text)
+        tags_formated = {}
+        for tag in tags:
+            if tags_formated.get(tag["entity_group"]):
+                tags_formated[tag["entity_group"]].append(tag["word"])
+            else:
+                tags_formated[tag["entity_group"]] = [tag["word"].replace("#", "")]
+
+        response = {
+            "text": text,
+            "tags": tags_formated,
+        }
+        return response
