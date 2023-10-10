@@ -1,4 +1,9 @@
 const styles = {
+    loading: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     bestMarkets: {
       left:15,
       fontSize: 30,
