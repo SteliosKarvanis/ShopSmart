@@ -64,7 +64,7 @@ function SearchBarWithOptions() {
     <View >
       <View style={styles.searchbar}>
 
-        <Icon name="search" size={20} color="black" style={styles.lupa} /> {/* Ícone de lupa */}
+        <Icon name="search" size={20} color="black" style={styles.lupa} />
         <TextInput
           style={styles.textsearchbar}
           placeholder="Busque"
