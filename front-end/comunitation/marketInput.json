@@ -1,0 +1,20 @@
+{
+    "userLocation":{
+        "lat": -23.5489,
+        "lon":-46.6388
+    },
+    "productstoMarkets":[
+        {
+            "productName":"Achocolatado",
+            "brand":"Mais barato",
+            "feature":"Garrafa",
+            "qte":200
+        },
+        {
+            "productName":"Chocolate",
+            "brand":"Garato",
+            "feature":"Mais barato",
+            "qte": 500
+        }
+    ]
+}

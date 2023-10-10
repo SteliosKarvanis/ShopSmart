@@ -1,0 +1,18 @@
+{
+    "productList":[
+            {
+                "name":"Achocolatado",
+                "imageSampleUrl": "acho.png",
+                "unity":"ml",
+                "possibleBrands": ["Nescau","Toddy","Mais Barato"],
+                "possibleFeatures": ["Garrafa","Caixa","Mais Barato"]
+            },
+            {
+                "name":"Chocolate",
+                "imageSampleUrl": "choco.png",
+                "unity":"grams",
+                "possibleBrands":["Garoto","Kit Kat"],
+                "possibleFeatures":["Barra"]
+            }
+        ]
+}
