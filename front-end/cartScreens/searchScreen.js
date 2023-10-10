@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import styles from './styles';
+import styles from '../styles';
 import SearchBarWithOptions from './searchBar';
 import { View, TextInput, Text, StyleSheet, Button, Pressable } from 'react-native';
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import Title from './title';
+import Title from '../title';
 
 const SearchScreen = () => {
     const navigation = useNavigation();

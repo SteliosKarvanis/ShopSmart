@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState} from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
-import styles from './styles';
+import styles from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import Tutorial from './tutorial';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 function SearchBarWithOptions() {
   const [searchText, setSearchText] = useState('');
@@ -30,7 +30,12 @@ function SearchBarWithOptions() {
   // Function to filter options based on search text
   const filterOptions = (text) => {
     const filteredOptions = allOptions.filter((option) => {
-      return text !== '' ? option.toLowerCase().includes(text.toLowerCase()) : ''
+      if (text !== '')
+        return option.toLowerCase().includes(text.toLowerCase()) 
+      else {
+        setShowList(false)
+        return ''
+      }
     });
     setOptions(filteredOptions);
   };

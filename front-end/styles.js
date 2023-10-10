@@ -1,4 +1,22 @@
 const styles = {
+    bestMarkets: {
+      left:15,
+      fontSize: 30,
+      marginBottom: 0,
+      fontFamily: 'Lucida Grande'
+    },
+    bestMarketsBox:{
+      position: 'absolute',
+      top: 150,
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      backgroundColor: 'lightgreen',
+      borderRadius: 10,
+      height: 50,
+      width: 350,
+    },
     lupa: {
       position: 'absolute',
       left: 10
@@ -40,7 +58,7 @@ const styles = {
         position: 'absolute',
         bottom: 30,  
         width: '100%',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
         backgroundColor: 'lightgrey',

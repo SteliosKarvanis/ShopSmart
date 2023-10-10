@@ -1,6 +1,6 @@
-import SearchScreen from './searchScreen';
-import ListScreen from './listScreen';
-import OptionsScreen from './optionsScreen';
+import SearchScreen from './cartScreens/searchScreen';
+import ListScreen from './cartScreens/listScreen';
+import MarketsScreen from './marketsScreens/marketsScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { GlobalProvider } from './context';
@@ -26,8 +26,8 @@ function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="OptionsScreen"
-            component={OptionsScreen}
+            name="MarketsScreen"
+            component={MarketsScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
