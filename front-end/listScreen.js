@@ -9,8 +9,7 @@ import { useGlobalContext } from './context';
 
 function ListScreen(){
     const navigation = useNavigation(); 
-
-    const { list,toggleSelection } = useGlobalContext();
+    const { list, addElement,removeElement } = useGlobalContext();
     return (
         <View style={styles.container}>
             <Title/>
@@ -24,7 +23,7 @@ function ListScreen(){
                   <Text >
                     {item}
                   </Text>
-                  <TouchableOpacity style={styles.plus} onPress={() => (null)}>
+                  <TouchableOpacity style={styles.plus} onPress={() => removeElement(item)}>
                     <Ionicons name="remove-circle-outline"  size={20} color="black" />
                   </TouchableOpacity>
                 </View>

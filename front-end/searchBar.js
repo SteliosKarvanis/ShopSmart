@@ -11,7 +11,7 @@ function SearchBarWithOptions() {
   const [options, setOptions] = useState([]);
   const [showList, setShowList] = useState(false);
   // Simulated list of options for demonstration
-  const { list, toggleSelection } = useGlobalContext();
+  const { list, addElement,removeElement } = useGlobalContext();
   const allOptions = [
     'Apple',
     'Banana',
@@ -83,7 +83,7 @@ function SearchBarWithOptions() {
                   <Text >
                     {item}
                   </Text>
-                  <TouchableOpacity style={styles.plus} onPress={() => toggleSelection(item)}>
+                  <TouchableOpacity style={styles.plus} onPress={() => addElement(item)}>
                     <Ionicons name="add" size={20} color="black" />
                   </TouchableOpacity>
                 </View>
