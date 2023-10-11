@@ -47,7 +47,7 @@ const styles = {
     },
     buttonBoxRight1: {
       position: 'absolute',
-      bottom: 20,
+      bottom: 30,
       width: '100%',
       flexDirection: 'column',
       alignItems: 'center',
@@ -56,7 +56,7 @@ const styles = {
       borderRadius: 10,
       height: 50,
       width: 150,
-      right: 30
+      right: 15
     },
     buttonBackToList:   {
         position: 'absolute',
@@ -85,7 +85,7 @@ const styles = {
   
     buttonBoxLeft1: {
       position: 'absolute',
-      bottom: 20,
+      bottom: 30,
       width: '100%',
       flexDirection: 'column',
       alignItems: 'center',
@@ -94,12 +94,12 @@ const styles = {
       borderRadius: 10,
       height: 50,
       width: 150,
-      left: 30
+      left: 15
     },
 
     buttonBoxRight2: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 30,
         width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
@@ -108,12 +108,12 @@ const styles = {
         borderRadius: 10,
         height: 50,
         width: 150,
-        right: 30
+        right: 15
       },
     
       buttonBoxLeft2: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 30,
         width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
@@ -122,7 +122,7 @@ const styles = {
         borderRadius: 10,
         height: 50,
         width: 150,
-        left: 30
+        left: 15
       },
     textsearchbar:{
       borderColor: 'transparent',
