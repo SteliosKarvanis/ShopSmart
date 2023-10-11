@@ -55,14 +55,15 @@ function SearchBarWithOptions() {
     filterOptions(text);
   };
 
-
-  const handleKeyPress = (e) => {
-    if (e.nativeEvent.key === "Enter") {
-      // Handle Enter key press here
-      Keyboard.dismiss(); // Dismiss the keyboard
-      setShowList(true);
-    }
-  };
+  {/*
+    const handleKeyPress = (e) => {
+      if (e.nativeEvent.key === "Enter") {
+        // Handle Enter key press here
+        Keyboard.dismiss(); // Dismiss the keyboard
+        setShowList(true);
+      }
+    };
+  */}
 
   {/* <Text>Selected Options:</Text>
           {list.length>0 && list.map((selectedOption) => (
@@ -78,7 +79,7 @@ function SearchBarWithOptions() {
           style={styles.textsearchbar}
           placeholder="Busque"
           onChangeText={handleSearch}
-          onKeyPress={handleKeyPress}
+          onSubmitEditing={()=>setShowList(true)}
           value={searchText}
         />
         <TouchableOpacity style={styles.plus} onPress={() => (null)}>
