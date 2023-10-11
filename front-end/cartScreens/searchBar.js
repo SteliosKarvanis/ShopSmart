@@ -1,5 +1,5 @@
-import React, { useState} from 'react';
-import { View, TextInput, FlatList, Text, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
+import React, { useState,useEffect} from 'react';
+import { View, TextInput, FlatList, Text, TouchableOpacity, Keyboard, ScrollView  } from 'react-native';
 import styles from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Ionicons } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import { useGlobalContext } from '../context';
 function SearchBarWithOptions() {
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([]);
+  const [location, setLocation] = useState(null);
   const [showList, setShowList] = useState(false);
   // Simulated list of options for demonstration
   const { list, addElement,removeElement } = useGlobalContext();
@@ -25,7 +26,15 @@ function SearchBarWithOptions() {
     'Pineapple',
     'Strawberry',
     'Watermelon',
+    'a',
+    'aa',
+    'aaa',
+    'aaaaa',
+    'aaaaaaa'
   ];
+
+  // Location
+  
 
   // Function to filter options based on search text
   const filterOptions = (text) => {
@@ -48,7 +57,7 @@ function SearchBarWithOptions() {
 
 
   const handleKeyPress = (e) => {
-    if (e.nativeEvent.key === 'Enter') {
+    if (e.nativeEvent.key === "Enter") {
       // Handle Enter key press here
       Keyboard.dismiss(); // Dismiss the keyboard
       setShowList(true);
@@ -64,7 +73,7 @@ function SearchBarWithOptions() {
     <View >
       <View style={styles.searchbar}>
 
-        <Icon name="search" size={20} color="black" style={styles.lupa} /> {/* Ícone de lupa */}
+        <Icon name="search" size={20} color="black" style={styles.lupa} /> 
         <TextInput
           style={styles.textsearchbar}
           placeholder="Busque"
@@ -79,8 +88,8 @@ function SearchBarWithOptions() {
       </View>
       {!showList ? <Tutorial /> :
 
-        <ScrollView>
-          {
+        
+          
             <FlatList
               data={options}
               renderItem={({ item }) => (
@@ -93,13 +102,13 @@ function SearchBarWithOptions() {
                   </TouchableOpacity>
                 </View>
               )}
-              style={{ height: 200, overflow: 'scroll' }}
+              style={{ height: 400, overflow: 'scroll' }}
               keyExtractor={(item) => item}
-            />}
+            />
 
 
 
-        </ScrollView>
+
       }
     </View>
   );

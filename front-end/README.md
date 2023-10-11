@@ -42,6 +42,10 @@ git checkout frontend/b
 
 ### Install requirements
 
+```bash
+cd ShopSmart/front-end
+```
+
 Go to front-end project root, where are .js files and run the following commands
 
 ```bash
@@ -52,6 +56,7 @@ npm install @react-navigation/native
 npm install @react-navigation/stack
 npm install react-native-vector-icons --save
 npx expo install --fix
+npm install @react-native-community/geolocation --save
 ```
 
 ### Run interface
@@ -59,6 +64,10 @@ npx expo install --fix
 ```bash
 npm start
 ```
+
+## OBS: 
+
+When commiting or pushing go to repo root /ShopSmart
 
 ### Simulator extection
 

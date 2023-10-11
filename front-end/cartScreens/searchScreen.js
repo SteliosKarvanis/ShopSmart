@@ -13,8 +13,8 @@ const SearchScreen = () => {
 
             <Title />
 
-            <SearchBarWithOptions/> {/* Render the SearchBarWithOptions component */}
-            
+            <SearchBarWithOptions /> 
+
             <View style={styles.buttonBoxLeft1}>
                 <Ionicons name="search" size={20} color="black" />
                 <Text>

@@ -8,9 +8,6 @@ import { GlobalProvider } from './context';
 const Stack = createStackNavigator();
 
 function App() {
-
-
-
   return (
     <GlobalProvider>
       <NavigationContainer>

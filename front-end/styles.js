@@ -8,7 +8,6 @@ const styles = {
       left:15,
       fontSize: 30,
       marginBottom: 0,
-      fontFamily: 'Lucida Grande'
     },
     bestMarketsBox:{
       position: 'absolute',
@@ -128,7 +127,6 @@ const styles = {
     textsearchbar:{
       borderColor: 'transparent',
       fontSize: 15,
-      fontFamily: 'Lucida Grande',
       paddingHorizontal: 35,
       height: 40, 
       width: 300,
@@ -167,7 +165,6 @@ const styles = {
     title: {
       alignItems: 'center', // para centralizar verticalmente
       justifyContent: 'center',
-      fontFamily: 'Avernir next',
       fontSize: 50,
       paddingVertical: 4,
     },
@@ -191,7 +188,6 @@ const styles = {
       flexDirection: 'column', // para alinhar o ícone e a caixa de texto na mesma linha
       alignItems: 'center', // para centralizar verticalmente
       justifyContent: 'center',
-      fontFamily: 'Montserrat'
     },
     container: {
       flex: 1, // para alinhar o ícone e a caixa de texto na mesma linha
@@ -211,7 +207,6 @@ const styles = {
       left:15,
       fontSize: 18,
       marginBottom: 0,
-      fontFamily: 'Lucida Grande'
     },
 };
 

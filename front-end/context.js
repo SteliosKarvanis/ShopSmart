@@ -5,7 +5,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 export const GlobalProvider = ({ children }) => {
   const [list, setList] = useState([]);
-
+  
   function addElement(option){
     if (!list.includes(option)) {
         setList([...list, option]);
