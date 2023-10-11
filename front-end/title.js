@@ -6,7 +6,7 @@ const Title = () => {
         <View>
             <Image
                 source={require('..\\assets\\title.png')}
-                style={{ width: 400, height: 100, resizeMode: 'contain'}}
+                style={{ width: 400, height: 100, top:10, resizeMode: 'contain'}}
             />
 
         </View>

@@ -19,7 +19,7 @@ const styles = {
       backgroundColor: 'lightgreen',
       borderRadius: 10,
       height: 50,
-      width: 350,
+      width: 330,
     },
     lupa: {
       position: 'absolute',
@@ -39,7 +39,7 @@ const styles = {
       borderRadius: 15,
       borderWidth: 1,
       height: 80,
-      width: 350,
+      width: 330,
       backgroundColor: 'lightgrey',
       fontSize: 15,
       paddingVertical: 16,
@@ -68,7 +68,7 @@ const styles = {
         backgroundColor: 'lightgrey',
         borderRadius: 10,
         height: 50,
-        width: 350,
+        width: 330,
       },
     buttonToOptions: {
         position: 'absolute',
@@ -80,7 +80,7 @@ const styles = {
         backgroundColor: 'lightgreen',
         borderRadius: 10,
         height: 50,
-        width: 350,
+        width: 330,
       },
   
     buttonBoxLeft1: {
@@ -134,7 +134,7 @@ const styles = {
     },
   
     searchbar: {
-      width: 350,
+      width: 330,
       height: 40,
       borderRadius: 20,
       backgroundColor: 'lightgrey',
@@ -149,7 +149,7 @@ const styles = {
       borderRadius: 10, // para alinhar o ícone e a caixa de texto na mesma linha
       //alignItems: 'center', // para centralizar verticalmente
       height: 130,
-      width: 350,
+      width: 330,
       margin: 8
     },
 
@@ -159,7 +159,7 @@ const styles = {
         borderRadius: 10, // para alinhar o ícone e a caixa de texto na mesma linha
         alignItems: 'center', // para centralizar verticalmente
         height: 70,
-        width: 350,
+        width: 330,
         marginBottom: 30
       },
     title: {
