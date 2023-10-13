@@ -5,14 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { Ionicons } from '@expo/vector-icons';
 import Tutorial from './tutorial';
 import { useGlobalContext } from '../context';
+import { useGlobalContextLoc } from '../locationContext';
 
 function SearchBarWithOptions() {
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([]);
-  const [location, setLocation] = useState(null);
   const [showList, setShowList] = useState(false);
   // Simulated list of options for demonstration
   const { list, addElement,removeElement } = useGlobalContext();
+  const {location,getCurrentLocation} = useGlobalContextLoc();
   const allOptions = [
     'Apple',
     'Banana',
@@ -54,21 +55,7 @@ function SearchBarWithOptions() {
     setSearchText(text);
     filterOptions(text);
   };
-
-  {/*
-    const handleKeyPress = (e) => {
-      if (e.nativeEvent.key === "Enter") {
-        // Handle Enter key press here
-        Keyboard.dismiss(); // Dismiss the keyboard
-        setShowList(true);
-      }
-    };
-  */}
-
-  {/* <Text>Selected Options:</Text>
-          {list.length>0 && list.map((selectedOption) => (
-            <Text key={selectedOption}>{selectedOption}</Text>
-          ))} */}
+  console.log(location)
 
   return (
     <View >
@@ -82,16 +69,14 @@ function SearchBarWithOptions() {
           onSubmitEditing={()=>setShowList(true)}
           value={searchText}
         />
-        <TouchableOpacity style={styles.plus} onPress={() => (null)}>
+        <TouchableOpacity style={styles.plus} onPress={getCurrentLocation}>
           <Ionicons name="ios-location-sharp" size={20} color="black" />
         </TouchableOpacity>
 
       </View>
       {!showList ? <Tutorial /> :
-
-        
-          
-            <FlatList
+          <View style={{ height: 390 }}>
+          <FlatList
               data={options}
               renderItem={({ item }) => (
                 <View style={styles.option}>
@@ -103,13 +88,11 @@ function SearchBarWithOptions() {
                   </TouchableOpacity>
                 </View>
               )}
-              style={{ height: 400, overflow: 'scroll' }}
+              style={{ height: 410, overflow: 'scroll' }}
               keyExtractor={(item) => item}
             />
-
-
-
-
+          </View>
+            
       }
     </View>
   );

@@ -13,22 +13,24 @@ function ListScreen() {
     <View style={styles.container}>
       <Title />
 
-
-      <FlatList
-        data={list}
-        renderItem={({ item }) => (
-          <View style={styles.option}>
-            <Text >
-              {item}
-            </Text>
-            <TouchableOpacity style={styles.plus} onPress={() => removeElement(item)}>
-              <Ionicons name="remove-circle-outline" size={20} color="black" />
-            </TouchableOpacity>
-          </View>
-        )}
-        style={{ height: 200, overflow: 'scroll' }}
-        keyExtractor={(item) => item}
-      />
+      <View style={{ height: 390 }}>
+        <FlatList
+          data={list}
+          renderItem={({ item }) => (
+            <View style={styles.option}>
+              <Text >
+                {item}
+              </Text>
+              <TouchableOpacity style={styles.plus} onPress={() => removeElement(item)}>
+                <Ionicons name="remove-circle-outline" size={20} color="black" />
+              </TouchableOpacity>
+            </View>
+          )}
+          style={{ height: 430, overflow: 'scroll' }}
+          keyExtractor={(item) => item}
+        />
+      </View>
+      
 
 
       <View style={styles.buttonBoxRight2}>
