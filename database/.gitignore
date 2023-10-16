@@ -1,0 +1,62 @@
+# Database data files
+*.sqlite
+*.db
+*.sql
+
+# Database log files
+*.log
+*.log.*
+
+Database backup files
+*.bak
+*.backup
+
+# Database configuration files
+*.conf
+
+# Migrations
+/migrations/
+
+# Database connection files
+.env
+.env.*
+
+# Database dump files
+# '*.sql'
+
+# Conda environment
+.env/
+.env.bak/
+.env.*.bak/
+
+# Compiled Python files
+*.pyc
+
+# Virtual environment directories
+__pycache__/
+venv/
+env/
+.env/
+
+# Database
+*.sqlite
+
+# System files from your text editor 
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# SQLAlchemy migration directory
+/migrations/
+
+instance/
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/
