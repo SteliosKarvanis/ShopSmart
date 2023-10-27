@@ -3,9 +3,12 @@ beautifulsoup4
 black
 Unidecode
 PyQt5
-spacy
 tqdm
 thefuzz
 seaborn
 numpy
 numba
+# spacy
+transformers
+evaluate
+seqeval
