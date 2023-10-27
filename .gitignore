@@ -1,6 +1,6 @@
 *__pycache__
 *.pickle
 data/raw/
-data/tagged/
+data/tagged*/
 bert_finetuned_ner*
 best_bert_finetuned_ner*
