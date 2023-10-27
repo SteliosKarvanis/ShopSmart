@@ -1,2 +1,4 @@
 *__pycache__
 *.pickle
+bert_finetuned_ner*
+best_bert_finetuned_ner*
