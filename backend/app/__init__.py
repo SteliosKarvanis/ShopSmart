@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from . import server
+from . import db
 
 
 def create_app(test_config=None):
@@ -11,7 +12,7 @@ def create_app(test_config=None):
     app.config.from_mapping(SECRET_KEY="dev")
     app.config[
         "SQLALCHEMY_DATABASE_URI"
-    ] = "postgresql://postgres:postgres@localhost/postgres"
+    ] = "postgresql://postgres:postgres@localhost/flask"
 
     if test_config is None:
         # Load the instance config, if it exists, when not testing
@@ -26,6 +27,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    # Start new db
+    db.init_app(app)
     # Register blueprint to organize views
     app.register_blueprint(server.bp)
 
