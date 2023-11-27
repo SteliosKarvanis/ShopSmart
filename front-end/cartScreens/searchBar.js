@@ -7,6 +7,7 @@ import Tutorial from './tutorial';
 import { useGlobalContext } from '../context';
 import { useGlobalContextLoc } from '../locationContext';
 
+
 function SearchBarWithOptions() {
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([]);
@@ -14,48 +15,46 @@ function SearchBarWithOptions() {
   // Simulated list of options for demonstration
   const { list, addElement,removeElement } = useGlobalContext();
   const {location,getCurrentLocation} = useGlobalContextLoc();
-  const allOptions = [
-    'Apple',
-    'Banana',
-    'Bolo',
-    'Cherry',
-    'Date',
-    'Grape',
-    'Lemon',
-    'Mango',
-    'Orange',
-    'Pineapple',
-    'Strawberry',
-    'Watermelon',
-    'a',
-    'aa',
-    'aaa',
-    'aaaaa',
-    'aaaaaaa'
-  ];
+  const data = {
+    "productList":[
+            {
+                "name":"Achocolatado",
+                "imageSampleUrl": "acho.png",
+                "unity":"ml",
+                "possibleBrands": ["Nescau","Toddy","Mais Barato"],
+                "possibleFeatures": ["Garrafa","Caixa","Mais Barato"]
+            },
+            {
+                "name":"Chocolate",
+                "imageSampleUrl": "choco.png",
+                "unity":"grams",
+                "possibleBrands":["Garoto","Kit Kat"],
+                "possibleFeatures":["Barra"]
+            }
+        ]
+  }
 
-  // Location
-  
+
 
   // Function to filter options based on search text
   const filterOptions = (text) => {
-    const filteredOptions = allOptions.filter((option) => {
-      if (text !== '')
-        return option.toLowerCase().includes(text.toLowerCase()) 
+    const filteredOptions = data.productList.filter((product) => {
+      if (text !== '' && product.name.toLowerCase().includes(text.toLowerCase()))
+          return product
       else {
         setShowList(false)
-        return ''
+        return null
       }
-    });
+    })
     setOptions(filteredOptions);
   };
-
+  
   const handleSearch = (text) => {
 
     setSearchText(text);
     filterOptions(text);
   };
-  console.log(location)
+  console.log(list)
 
   return (
     <View >
@@ -81,10 +80,10 @@ function SearchBarWithOptions() {
               renderItem={({ item }) => (
                 <View style={styles.option}>
                   <Text >
-                    {item}
+                    {item.name}
                   </Text>
                   <TouchableOpacity style={styles.plus} onPress={() => addElement(item)}>
-                    <Ionicons name="add" size={20} color="black" />
+                    <Ionicons name="add-circle-outline" size={20} color="black" />
                   </TouchableOpacity>
                 </View>
               )}

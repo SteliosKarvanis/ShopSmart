@@ -1,0 +1,22 @@
+{
+    "userLocation":{
+        "lat": -23.5489,
+        "lon":-46.6388
+    },
+    "productstoMarkets":[
+        {
+            "name":"Achocolatado",
+            "imageSampleUrl": "acho.png",
+            "unity":"ml",
+            "qtd":200,
+            "unities": 5
+        },
+        {
+            "name":"Chocolate",
+            "imageSampleUrl": "acho.png",
+            "unity":"g",
+            "qtd":200,
+            "unities": 5
+        }
+    ]
+}

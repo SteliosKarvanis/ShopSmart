@@ -1,0 +1,16 @@
+{
+    "productList":[
+            {
+                "name":"Achocolatado",
+                "imageSampleUrl": "acho.png",
+                "unity":"ml",
+                "qtd":200
+            },
+            {
+                "name":"Chocolate",
+                "imageSampleUrl": "choco.png",
+                "unity":"grams",
+                "qtd":175
+            }
+        ]
+}
