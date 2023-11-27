@@ -9,12 +9,25 @@ export const GlobalProvider = ({ children }) => {
   function addElement(option){
     if (!list.includes(option)) {
         setList([...list, option]);
-    } 
+    } else {
+      setList(
+        list.map((item) =>
+          item === option ? { ...item, unities: item.unities + 1 } : item
+        )
+      );
+    }
   };
 
   function removeElement(option){
     if (list.includes(option)) {
-        setList(list.filter(item => item !== option));
+        if (option.unities == 1) {
+          setList(list.filter(item => item !== option));
+        } else {
+          setList(
+            list.map((item) =>
+              item === option ? { ...item, unities: item.unities - 1 } : item)
+            )
+        }
     } 
   };
   return (

@@ -21,18 +21,18 @@ function SearchBarWithOptions() {
                 "name":"Achocolatado",
                 "imageSampleUrl": "acho.png",
                 "unity":"ml",
-                "possibleBrands": ["Nescau","Toddy","Mais Barato"],
-                "possibleFeatures": ["Garrafa","Caixa","Mais Barato"]
+                "qtd":200,
+                "unities":1
             },
             {
                 "name":"Chocolate",
                 "imageSampleUrl": "choco.png",
                 "unity":"grams",
-                "possibleBrands":["Garoto","Kit Kat"],
-                "possibleFeatures":["Barra"]
+                "qtd":175,
+                "unities":1
             }
         ]
-  }
+}
 
 
 
@@ -80,8 +80,9 @@ function SearchBarWithOptions() {
               renderItem={({ item }) => (
                 <View style={styles.option}>
                   <Text >
-                    {item.name}
+                    {item.name} {item.qtd} {item.unity}
                   </Text>
+
                   <TouchableOpacity style={styles.plus} onPress={() => addElement(item)}>
                     <Ionicons name="add-circle-outline" size={20} color="black" />
                   </TouchableOpacity>

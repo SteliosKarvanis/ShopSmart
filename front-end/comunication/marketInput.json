@@ -3,20 +3,21 @@
         "lat": -23.5489,
         "lon":-46.6388
     },
-    "productstoMarkets":[
-        {
-            "name":"Achocolatado",
-            "imageSampleUrl": "acho.png",
-            "unity":"ml",
-            "qtd":200,
-            "unities": 5
-        },
-        {
-            "name":"Chocolate",
-            "imageSampleUrl": "acho.png",
-            "unity":"g",
-            "qtd":200,
-            "unities": 5
-        }
-    ]
+    
+    "productList":[
+            {
+                "name":"Achocolatado",
+                "imageSampleUrl": "acho.png",
+                "unity":"ml",
+                "qtd":200,
+                "unities":1
+            },
+            {
+                "name":"Chocolate",
+                "imageSampleUrl": "choco.png",
+                "unity":"grams",
+                "qtd":175,
+                "unities":1
+            }
+        ]
 }

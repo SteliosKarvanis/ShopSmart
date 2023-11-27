@@ -19,7 +19,7 @@ function ListScreen() {
           renderItem={({ item }) => (
             <View style={styles.option}>
               <Text >
-                {item}
+                 {item.unities} X {item.name} {item.qtd} {item.unity} 
               </Text>
               <TouchableOpacity style={styles.plus} onPress={() => removeElement(item)}>
                 <Ionicons name="remove-circle-outline" size={20} color="black" />
