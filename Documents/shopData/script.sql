@@ -33,7 +33,7 @@ CREATE TABLE TIPO_DIMENSAO (
     dim_id UUID PRIMARY KEY,
     unidade_si VARCHAR(16),
     valor VARCHAR(128), --duvida, por ex 10x10
-    FOREIGN KEY (unidade_si) REFERENCES TIPO_DIMENSAO(dim_id),
+    FOREIGN KEY (unidade_si) REFERENCES UNIDADES_SI(unidade_si),
 );
 
 CREATE TABLE UNIDADES_SI (
