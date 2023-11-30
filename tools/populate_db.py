@@ -77,7 +77,7 @@ def similarity(tags1, tags2):
 thresh = 80  # threshold in 0-100 scale
 
 
-TAGGED_DATA_DIR = os.path.join("..", "data", "tagged_bert_small_toy")
+TAGGED_DATA_DIR = os.path.join("..", "data", "tagged_bert")
 assert os.path.isdir(TAGGED_DATA_DIR), f"You must run predict.ipynb before to have tagged data in {TAGGED_DATA_DIR}"
 
 #// if os.path.exists("best_bert_finetuned_ner"):
@@ -441,20 +441,24 @@ finally:
 
 with engine.connect() as conn:
     if len(tipo_dimensao_list) > 0:
-        print("tipo_dimensao:")
+        print("\n\ntipo_dimensao:")
         tipo_dimensao_df = pd.DataFrame(tipo_dimensao_list, columns=["dim_id", "unidade_si", "valor"])
         print(len(tipo_dimensao_df), "items")
         print(tipo_dimensao_df.sample(5))
         tipo_dimensao_df.to_sql(name="tipo_dimensao", con=conn, if_exists="append", index=False)
     if len(tipo_produto_list) > 0:
-        print("tipo_produto:")
+        print("\n\ntipo_produto:")
         tipo_produto_df = pd.DataFrame(tipo_produto_list, columns=["tp_id", "nome_do_tipo", "marca", "quantidade", "dim_id", "detalhes"])
+        tipo_produto_df["nome_do_tipo"] = tipo_produto_df["nome_do_tipo"].str.slice(0, 128)
+        tipo_produto_df["marca"] = tipo_produto_df["marca"].str.slice(0, 64)
+        tipo_produto_df["detalhes"] = tipo_produto_df["detalhes"].str.slice(0, 256)
         print(len(tipo_produto_df), "items")
         print(tipo_produto_df.sample(5))
         tipo_produto_df.to_sql(name="tipo_produto", con=conn, if_exists="append", index=False)
     if len(instancia_produto_list) > 0:
-        print("instancia_produto:")
+        print("\n\ninstancia_produto:")
         instancia_produto_df = pd.DataFrame(instancia_produto_list, columns=["m_id", "tp_id", "nome_produto", "preco", "disponibilidade", "logo_url", "ultima_mudanca"])
+        instancia_produto_df["nome_produto"] = instancia_produto_df["nome_produto"].str.slice(0, 128)
         print(len(instancia_produto_df), "items")
         print(instancia_produto_df.sample(5))
         instancia_produto_df.to_sql(name="instancia_produto", con=conn, if_exists="append", index=False)
