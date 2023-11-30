@@ -1,0 +1,32 @@
+{
+    "atacadao-sao-jose-dos-campos-shopping-jd-satelite": {
+        "nome": "Atacadao Shopping Jd Satelite",
+        "endereco": "Rua Andromeda, 227 - Jardim Satélite, São José dos Campos - SP, 12230-000",
+        "latitude": -23.2243840596919,
+        "longitude": -45.87746932899882
+    },
+    "carrefour-hiper---sj-campos-serimbura": {
+        "nome": "Carrefour Serimbura",
+        "endereco": "Av. Dep. Benedito Matarazzo, 5701 - Jardim Serimbura, São José dos Campos - SP, 12246-840",
+        "latitude": -23.222759649497355,
+        "longitude": -45.90596273214803
+    },
+    "coop---jd-morumbi-jd-morumbi": {
+        "nome": "Coop Morumbi",
+        "endereco": "Av. Dr. João Batista de Souza Soares, 2185 - Jardim Morumbi, São José dos Campos - SP, 12240-000",
+        "latitude": -23.241758126926467,
+        "longitude": -45.904994093616544
+    },
+    "dia-supermercado---aquarius-jardim-alvorada": {
+        "nome": "DIA Supermercado",
+        "endereco": "Av. Cassiano Ricardo, 1214 - Jardim Alvorada, São José dos Campos - SP, 12240-540",
+        "latitude": -23.222726569671536,
+        "longitude": -45.91154991690602
+    },
+    "extra-sjc-centro-jd-osvaldo-cruz": {
+        "nome": "Extra Jd Oswaldo Cruz",
+        "endereco": "Av. Dr. Nélson d'Ávila, 1941 - Vila Sao Benedito, São José dos Campos - SP, 12247-004",
+        "latitude": -23.202490865191756,
+        "longitude": -45.88365325456103
+    }
+}

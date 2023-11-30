@@ -36,7 +36,7 @@ def build_edge_list(matrix, thresh):
                 # if k > fair_sz:
                 #     print(f"\033[91mk = {k}, increase fair-sz in build_edge_list(..)\033[0m")
                 #     return
-    return leftnodes, rightnodes, similarities
+    return k, leftnodes, rightnodes, similarities
 
 
 @njit
@@ -131,8 +131,8 @@ def eval_clusterization(similarity, thresh):
     cluster2markets = {}  # cluster number: list of markets present in cluster
 
     print("building list to sort")
-    leftnodes, rightnodes, similarities = build_edge_list(sim_matrix, thresh)
-    edges = [(int(l),int(r),s) for l,r,s in zip(leftnodes, rightnodes, similarities)]
+    n_edges, leftnodes, rightnodes, similarities = build_edge_list(sim_matrix, thresh)
+    edges = [(int(t[0]),int(t[1]),t[2]) for i, t in enumerate(zip(leftnodes, rightnodes, similarities)) if i < n_edges]
 
     print(f"sorting valid edges (total of edges: {len(edges)})")
     edges = sorted(edges, key=lambda t: t[2], reverse=True)
@@ -154,7 +154,6 @@ def eval_clusterization(similarity, thresh):
             continue
         # if both don't have a cluster, create new cluster and add both
         # NOTE: since entries for same market have been zeroed-out before starting the algorithm
-        # and threshold > 0, then we know e[0] and e[1] are from different markets
         cluster = n_clusters
         n_clusters += 1
         clusters[e[0]] = cluster
