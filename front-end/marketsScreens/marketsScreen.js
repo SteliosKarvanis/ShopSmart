@@ -5,9 +5,11 @@ import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Title from '../title';
 import LoadingScreen from './loading';
+import { useDetailContext } from '../detailContext';
 
 const MarketsScreen = () => {
   const navigation = useNavigation();
+  const { detail, handleDetail } = useDetailContext();
   const data = {
     "Markets": [
       {
@@ -126,11 +128,7 @@ const MarketsScreen = () => {
       }
     ]
   }
-  const [detail, SetDetail] = useState([]);
-  console.log(detail)
-  const handleDetail= (det) => {
-    SetDetail(det);
-  };
+  
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -171,7 +169,7 @@ const MarketsScreen = () => {
                   </TouchableOpacity>
                 </View>
               )}
-              style={{ height: 300, overflow: 'scroll', top: 120 }}
+              style={{ height: 350, overflow: 'scroll', top: 120 }}
               keyExtractor={(item) => item}
             />
           </View>

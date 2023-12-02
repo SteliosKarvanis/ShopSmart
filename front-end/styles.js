@@ -84,6 +84,7 @@ const styles = {
         height: 50,
         width: 330,
       },
+  
     buttonToOptions: {
         position: 'absolute',
         bottom: 100,
