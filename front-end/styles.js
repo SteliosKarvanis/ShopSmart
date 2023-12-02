@@ -45,6 +45,20 @@ const styles = {
       paddingVertical: 16,
       margin: 8
     },
+    option2: {
+      paddingHorizontal: 15,
+      flexDirection: 'col', 
+      flex: 1, // para alinhar o ícone e a caixa de texto na mesma linha
+      justifyContent: 'flex-start',
+      borderRadius: 15,
+      borderWidth: 1,
+      height: 20,
+      width: 330,
+      backgroundColor: 'lightgrey',
+      fontSize: 15,
+      paddingVertical: 16,
+      margin: 8
+    },
     buttonBoxRight1: {
       position: 'absolute',
       bottom: 30,

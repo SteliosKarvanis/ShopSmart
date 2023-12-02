@@ -7,8 +7,6 @@ export const GlobalProvider = ({ children }) => {
   const [list, setList] = useState([]);
   
   function addElement(option){
-    console.log("Option:", option);
-    console.log("List before:", list);
     if (list.some(item => item.name === option.name)) {
       setList(
         list.map((item) =>
@@ -19,8 +17,6 @@ export const GlobalProvider = ({ children }) => {
     } else {
       setList([...list, option]);
     }
-
-    console.log("List after:", list);
   };
 
   function removeElement(option){
