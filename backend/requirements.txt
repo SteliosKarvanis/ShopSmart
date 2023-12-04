@@ -1,3 +1,4 @@
 # List of python packages needed for the backend
 Flask
 SQLAlchemy
+psycopg2
