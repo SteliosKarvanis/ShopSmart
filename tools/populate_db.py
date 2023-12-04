@@ -9,6 +9,7 @@ from tqdm import tqdm
 from numba import njit
 from datetime import datetime
 import psycopg2
+from psycopg2 import sql
 from uuid import uuid4
 import pickle
 import re
@@ -255,8 +256,9 @@ try:
             LOAD_PRODS = False
             exit()
         elif do.lower() == 'y':
-            for table in filter(lambda s: s != "mercado", TABLES):
-                cur.execute("DELETE FROM %s;", (table,))
+            cur.execute("DELETE FROM instancia_produto;")
+            cur.execute("DELETE FROM tipo_produto;")
+            cur.execute("DELETE FROM tipo_dimensao;")
             conn.commit()
             print('deleted')
         else:
@@ -343,47 +345,58 @@ try:
                 marca = prod_data["tags"].get("MAR", [""])[0]
                 quantidade = prod_data["tags"].get("QUA", ["1"])[0]
                 try:
-                    quantidade = int(quantidade)
+                    quantidade = int(quantidade[0])
                 except ValueError:
                     quantidade = 1
                 detalhes = prod_metadata.details
                 if "TAM" in prod_data["tags"]:
                     dim = re.sub(r"[\d,.\s]", "", prod_data["tags"]["TAM"][0]) # remove digits
                     dim = dim.lower().strip()
+                    val = re.search(r"(\d+)", prod_data["tags"]["TAM"][0]) # get digits
+                    if val:
+                        val = float(val.group(1))
                     if dim == "kg":
                         pass
                     elif dim == "g":
                         dim = "kg"
-                        quantidade /= 1000
+                        if val:
+                            val /= 1000
                     elif dim == "l":
                         dim = "L"
                     elif dim == "m3" or dim == "m^3":
                         dim = "L"
-                        quantidade *= 1000
+                        if val:
+                            val *= 1000
                     elif dim == "dm3" or dim == "dm^3":
                         dim = "L"
                     elif dim == "ml":
                         dim = "L"
-                        quantidade /= 1000
+                        if val:
+                            val /= 1000
                     elif dim == "m":
                         pass
                     elif dim == "dm":
                         dim = "m"
-                        quantidade /= 10
+                        if val:
+                            val /= 10
                     elif dim == "cm":
                         dim = "m"
-                        quantidade /= 100
+                        if val:
+                            val /= 100
                     elif dim == "mm":
                         dim = "m"
-                        quantidade /= 1000
+                        if val:
+                            val /= 1000
                     elif dim == "m2" or dim == "m^2":
                         dim = "m^2"
                     elif dim == "dm2" or dim == "dm^2":
                         dim = "m^2"
-                        quantidade /= 100
+                        if val:
+                            val /= 100
                     elif dim == "cm2" or dim == "cm^2":
                         dim = "m^2"
-                        quantidade /= 10000
+                        if val:
+                            val /= 10000
                     else:
                         dim = "(outra unidade)"
                 else:
@@ -394,7 +407,7 @@ try:
                 #?     "INSERT INTO tipo_dimensao(dim_id, unidade_si, valor) VALUES (%s, %s, %s)",
                 #?     (dim_id, dim, quantidade)
                 #? )
-                tipo_dimensao_list.append((dim_id, dim, quantidade))
+                tipo_dimensao_list.append((dim_id, dim, val))
                 tp_id = uuid4()
                 #? cur.execute(
                 #?     "INSERT INTO tipo_produto(tp_id, nome_do_tipo, marca, quantidade, dim_id, detalhes) VALUES (%s, %s, %s, %s, %s, %s)",
