@@ -1,18 +1,11 @@
 from typing import Dict
 
-import spacy
+import transformers
+from transformers import pipeline
 
 # No fine-tunned model
-DEFAULT_MODEL = "pt_core_news_lg"
+DEFAULT_MODEL = "best_bert_finetuned_ner"
 
-LEBELS_TO_FEATURES = {
-    "O":"O",
-    "B-PRO":"product",
-    "B-MAR":"brand",
-    "B-ESP":"features",
-    "B-TAM":"size",
-    "B-QUA":"quantity",
-}
 
 class NERModel:
     """This class encapsulates all functionalities to load and use a NER model
@@ -31,15 +24,15 @@ class NERModel:
         self.model
 
     @property
-    def model(self) -> spacy.Language:
-        if not isinstance(self._model, spacy.Language):
-            self._model = spacy.load(self._model_folder)
+    def model(self) -> transformers.pipelines.token_classification.TokenClassificationPipeline:
+        if not isinstance(self._model, transformers.pipelines.token_classification.TokenClassificationPipeline):
+            self._model = pipeline("token-classification", model=self._model_folder, aggregation_strategy="simple")
         return self._model
 
     def retrieve_tags(self, text: str) -> Dict:
         """Retrieve the tags for a given text
         Example:
-            self.model.retrieve_tags("Batata Rustica 80g") -> 
+            self.model.retrieve_tags("Batata Rustica 80g") ->
             {'text': 'Batata Rustica 80g', 'tags': {'B-PRO': ['Batata'], 'B-ESP': ['Rustica'], 'B-TAM': ['80g']}}
 
         Args:
@@ -49,21 +42,16 @@ class NERModel:
         """
         # Extract Tags
         tags = {}
-        doc = self.model(text)
-        entities = [(e.text, e.label_) for e in doc.ents]
-        for value, tag in entities:
-            if LEBELS_TO_FEATURES.get(tag):
-                tag = LEBELS_TO_FEATURES[tag]
-            # Ignore O tag
-            if tag == "O":
-                continue
-            # If no tag field, create it
-            if not tags.get(tag):
-                tags[tag] = []
-            tags[tag].append(value)
+        tags = self.model(text)
+        tags_formated = {}
+        for tag in tags:
+            if tags_formated.get(tag["entity_group"]):
+                tags_formated[tag["entity_group"]].append(tag["word"])
+            else:
+                tags_formated[tag["entity_group"]] = [tag["word"].replace("#", "")]
 
         response = {
             "text": text,
-            "tags": tags,
+            "tags": tags_formated,
         }
         return response

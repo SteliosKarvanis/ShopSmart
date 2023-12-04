@@ -1,3 +1,6 @@
+import argparse
+import os
+import re
 import sys
 from functools import partial
 from typing import List
@@ -6,6 +9,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QAction, QApplication, QHBoxLayout, QLabel, QMainWindow, QPushButton, QVBoxLayout, QWidget
 
+TAGS_KEY = "tags"
+TEXT_KEY = "name"
 LABELS = [
     "O",
     "B-PRO",
@@ -20,7 +25,7 @@ LABELS = [
     "I-QUA",
 ]
 
-# TODO: move to a better file further
+
 def generate_tokens(name: str) -> List:
     """Generate tokens from a given name
 
@@ -35,24 +40,26 @@ def generate_tokens(name: str) -> List:
 class NERLabelingApp(QMainWindow):
     """This class encapsulates all functionalities to label NER data"""
 
-    def __init__(self, file_data: str):
+    def __init__(self, input_file_data: str, output_file_data: str):
         """
         text: the text to extract the tags
         tokens: the splits of the text to be labeled
         tags: a tuple containing the tag name, and the start and end index of the tag name on text
         """
         super().__init__()
+        if os.path.dirname(output_file_data):
+            os.makedirs(os.path.dirname(output_file_data), exist_ok=True)
 
         # Data
-        self.file_data = file_data
+        self.output_file_data = output_file_data
         self.data_list = self._read_data(
-            file_data
-        )  # List[Dict], a list of the data to be labeled, in format {"product": str, "tags": List[List]}
+            input_file_data
+        )  # List[Dict], a list of the data to be labeled, in format {TEXT_KEY: str, TAGS_KEY: List[List]}
         self.selected_tags = []  # List[List], a list of tags selected by the user
-        self.current_text_index = 0
-        self.current_token_index = 0
-        self.current_button_index = 0
-        self.current_tokens = None
+        self.current_text_index = 0  # Index of the current text in the data_list
+        self.current_token_index = 0  # Index of the current token (word)
+        self.current_button_index = 0  # Index of the current button selected (KeyBoard usage)
+        self.current_tokens = None  # List[str], a list of tokens from the current text
 
         # Widgtes
         self.text_view = None  # QTextEdit: the widget containing the current text
@@ -88,7 +95,7 @@ class NERLabelingApp(QMainWindow):
 
     def _update_text(self):
         """Update the text view"""
-        text = self.data_list[self.current_text_index].get("product")
+        text = self.data_list[self.current_text_index].get(TEXT_KEY)
         self.current_token_index = 0
         self.text_view.setText(text)
         self.current_tokens = generate_tokens(text)
@@ -102,7 +109,7 @@ class NERLabelingApp(QMainWindow):
     def _update_labels(self):
         """Update the labels view"""
         text = ""
-        saved_tags = self.data_list[self.current_text_index]["tags"]
+        saved_tags = self.data_list[self.current_text_index][TAGS_KEY]
         for tag in saved_tags + self.selected_tags:
             tag_name, start, end = tag
             token = self.text_view.text()[start:end]
@@ -111,13 +118,13 @@ class NERLabelingApp(QMainWindow):
 
     def save_data_action(self):
         """Save the data to the file"""
-        self.data_list[self.current_text_index]["tags"] += self.selected_tags
+        self.data_list[self.current_text_index][TAGS_KEY] += self.selected_tags
         self.selected_tags = []
-        self._save_to_file(self.file_data)
+        self._save_to_file(self.output_file_data)
 
     def clear_action(self):
         """Clear the data to the current text"""
-        self.data_list[self.current_text_index]["tags"] = []
+        self.data_list[self.current_text_index][TAGS_KEY] = []
         self.reset_all()
 
     def previous_text_action(self):
@@ -154,7 +161,7 @@ class NERLabelingApp(QMainWindow):
 
         updated = False
         label = LABELS[id]
-        saved_tags = self.data_list[self.current_text_index]["tags"]
+        saved_tags = self.data_list[self.current_text_index][TAGS_KEY]
 
         # Check if the token is already labeled and update it
         for tag in self.selected_tags + saved_tags:
@@ -191,20 +198,44 @@ class NERLabelingApp(QMainWindow):
         """Save the data to the file"""
         with open(file_data, "w+") as f:
             f.write("[")
-            for product in self.data_list:
-                f.write(f"{repr(product)},\n")
+            for elem in self.data_list:
+                f.write(f"{repr(elem)},\n")
             f.write("]\n")
 
     def _read_data(self, file_data: str) -> List:
         """Read the data from the file
+
         Args:
             file_data: the file containing the data to be labeled
         Returns:
             List, a list of the data
         """
-        with open(file_data, "r+") as f:
-            data_list = eval(f.read())
-        return data_list
+        # Read input data
+        with open(file_data, "r") as f:
+            names = []
+            for name in names:
+                name = name.replace("\n", "")
+                name = re.sub(" +", " ", name)
+                if name:
+                    names.append(name)
+        data = [{TEXT_KEY: name, TAGS_KEY: []} for name in names]
+
+        if not os.path.exists(self.output_file_data):
+            return data
+
+        # Read the already labelled data from output file
+        with open(self.output_file_data, "r+") as f:
+            output_file_data = eval(f.read())
+
+        # Update the input data with the output data
+        for elem in data:
+            name = elem[TEXT_KEY]
+            for output_elem in output_file_data:
+                output_name = output_elem[TEXT_KEY]
+                if name == output_name:
+                    elem[TAGS_KEY] = output_elem[TAGS_KEY]
+                    break
+        return data
 
     def print_shortkeys(self):
         text = f"""Shortkeys:
@@ -352,10 +383,20 @@ class NERLabelingApp(QMainWindow):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--input_file",
+        type=str,
+        required=True,
+    )
+    parser.add_argument(
+        "--output_file",
+        type=str,
+        required=True,
+    )
+    arguments = parser.parse_args()
+
     app = QApplication(sys.argv)
-    for flag in sys.argv:
-        if flag.startswith("--data="):
-            file_data = flag.split("=")[-1]
-    window = NERLabelingApp(file_data)
+    window = NERLabelingApp(arguments.input_file, arguments.output_file)
     window.show()
     sys.exit(app.exec_())
