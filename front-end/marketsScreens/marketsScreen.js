@@ -36,19 +36,28 @@ const MarketsScreen = () => {
               data={markets}
               renderItem={({ item }) => (
                 <View style={styles.option2}>
-                  <Text style={{ flex: 1, flexDirection: 'col', left: 80 }}>
-                    {item.name}
+                <View style={{ flex: 1, flexDirection: 'col', left: 20 }}>
+                <Text style={{ flexWrap: 'wrap' }}>
+                  {item.name}
+                </Text>
+                <Text style={{ flexWrap: 'wrap' }}>
+                {item.distance} km
+                </Text>
+                {item.missing ?
+                    <Text style={{ flexWrap: 'wrap', color: 'red' }}>
+                        Item faltando!
+                    </Text> : null}
+              </View>
+                  
 
-                  </Text>
-                  {/* <Text style={{ flex: 1, flexDirection: 'col', left: 80 }}>
-                    {item.distance} km
-                  </Text> */}
-                  <Text style={{ right: 50, position: 'absolute', fontSize: 20 }}>
+                  <Text style={{ right: 20, display: 'flex', fontSize: 15, color: 'green' }}>
                     R$ {item.total}
                   </Text>
 
-                  <TouchableOpacity style={styles.plus} onPress={() => {navigation.navigate('DetailsScreen');
-                                                                        handleDetail(item);}}>
+                  <TouchableOpacity style={styles.plus} onPress={() => {
+                    navigation.navigate('DetailsScreen');
+                    handleDetail(item);
+                  }}>
                     <AntDesign name="rightcircleo" size={20} color="black" />
                   </TouchableOpacity>
                 </View>

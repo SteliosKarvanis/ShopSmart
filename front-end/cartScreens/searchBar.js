@@ -19,27 +19,33 @@ function SearchBarWithOptions() {
 
   // Function to filter options based on search text
   const filterOptions = (text) => {
-    setShowList(false);
-    if (text === '') {
+    console.log(text)
+    console.log(text.length)
+    if (text.length > 0) {
+      const apiBody = {'userSearch':text};
+      const apiUrl = 'http://127.0.0.1:5000/server/search-product-type';
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apiBody),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setOptions(data.productList);
+          setShowList(true);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+        console.log(text)
+      
+    } else {
+      setShowList(false);
       return;
     }
-    const apiBody = {'userSearch':text};
-    const apiUrl = 'http://127.0.0.1:5000/server/search-product-type';
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(apiBody),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setOptions(data.productList);
-        setShowList(true);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    
   };
   
   const handleSearch = (text) => {

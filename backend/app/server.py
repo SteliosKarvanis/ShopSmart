@@ -60,6 +60,7 @@ def search_product_type():
             FROM tipo_produto as P
             JOIN tipo_dimensao as D ON P.dim_id = D.dim_id
             WHERE LOWER(P.nome_do_tipo) LIKE LOWER(:user_search)
+            LIMIT 20
         """
 
         db = DB.get_db()
@@ -133,9 +134,9 @@ def recommend_markets():
                     (result[1] - user_location["lat"]) ** 2
                     + (result[2] - user_location["lon"]) ** 2
                 ),
-                "distance-haversine": UTILS.calculate_distance(
+                "distance": float("{:.2f}".format(UTILS.calculate_distance(
                     user_location["lat"], user_location["lon"], result[1], result[2]
-                ),
+                ))),
                 "lat": result[1],
                 "lon": result[2],
                 "total": 0,
@@ -171,13 +172,27 @@ def recommend_markets():
                                     "name": instance[2],
                                     "qte": unities[index],
                                     "unityPrice": instance[3],
-                                    "subtotal": subtotal,
+                                    "subtotal": float("{:.2f}".format(subtotal)),
                                 }
                             )
                             market["total"] += subtotal
                             market["cartContains"][tp_ids[index]] = True
-
-        return jsonify({"Markets": markets})
+        for market in markets:
+            market["total"] = float("{:.2f}".format(market["total"]))
+            found = 0 
+            for cont in market["cartContains"].values():
+                if cont == True:
+                    found = found + 1
+            market["foundInstances"] = found
+        for market in markets:
+            if market["foundInstances"] == len(market["cartContains"].values()):
+                market["missing"] = False
+            else: 
+                market["missing"] = True
+                
+        sorted_markets = sorted(markets, key=lambda x: (-x['foundInstances'],x['total']))
+        
+        return jsonify({"Markets": sorted_markets})
     return jsonify({"error": "Invalid request method"})
 
 

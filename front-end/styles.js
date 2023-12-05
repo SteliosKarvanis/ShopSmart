@@ -47,12 +47,25 @@ const styles = {
     },
     option2: {
       paddingHorizontal: 15,
-      flexDirection: 'col', 
+      flexDirection: 'row', 
       flex: 1, // para alinhar o ícone e a caixa de texto na mesma linha
-      justifyContent: 'flex-start',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       borderRadius: 15,
       borderWidth: 1,
-      height: 20,
+      height: 50,
+      width: 330,
+      backgroundColor: 'lightgrey',
+      fontSize: 15,
+      paddingVertical: 16,
+      margin: 8
+    },
+    option3: {
+      paddingHorizontal: 15,
+      flexDirection: 'row', 
+      flex: 1, // para alinhar o ícone e a caixa de texto na mesma linha
+      borderRadius: 15,
+      borderWidth: 1,
       width: 330,
       backgroundColor: 'lightgrey',
       fontSize: 15,
