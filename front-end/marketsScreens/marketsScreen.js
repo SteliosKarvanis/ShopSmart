@@ -5,130 +5,14 @@ import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Title from '../title';
 import LoadingScreen from './loading';
-import { useDetailContext } from '../detailContext';
+import { useDetailContext } from '../context/detailContext';
+import { useMarketContext } from '../context/marketContext';
 
 const MarketsScreen = () => {
   const navigation = useNavigation();
   const { detail, handleDetail } = useDetailContext();
-  const data = {
-    "Markets": [
-      {
-        "name": "Carrefour",
-        "distance": 4.3,
-        "total": 24,
-        "cartInstances": [
-          {
-            "name": "Toddinho 200 ml",
-            "qte": 2,
-            "unityPrice": 20,
-            "subtotal": 10
-          },
-          {
-            "name": "Barra garoto 200g",
-            "qte": 3,
-            "unityPrice": 20,
-            "subtotal": 14
-          }
-        ]
-      },
-      {
-        "name": "Esperanca",
-        "distance": 5.8,
-        "total": 18,
-        "cartInstances": [
-          {
-            "name": "Toddinho 200 ml",
-            "qte": 5,
-            "unityPrice": 20,
-            "subtotal": 8
-          },
-          {
-            "name": "Barra Alpino 100g",
-            "qte": 8,
-            "unityPrice": 20,
-            "subtotal": 10
-          }
-        ]
-      },
-      {
-        "name": "Esperanca",
-        "distance": 5.8,
-        "total": 18,
-        "cartInstances": [
-          {
-            "name": "Toddinho 200 ml",
-            "qte": 5,
-            "unityPrice": 20,
-            "subtotal": 8
-          },
-          {
-            "name": "Barra Alpino 100g",
-            "qte": 8,
-            "unityPrice": 20,
-            "subtotal": 10
-          }
-        ]
-      },
-      {
-        "name": "Esperanca",
-        "distance": 5.8,
-        "total": 18,
-        "cartInstances": [
-          {
-            "name": "Toddinho 200 ml",
-            "qte": 5,
-            "unityPrice": 20,
-            "subtotal": 8
-          },
-          {
-            "name": "Barra Alpino 100g",
-            "qte": 8,
-            "unityPrice": 20,
-            "subtotal": 10
-          }
-        ]
-      },
-      {
-        "name": "Esperanca",
-        "distance": 5.8,
-        "total": 18,
-        "cartInstances": [
-          {
-            "name": "Toddinho 200 ml",
-            "qte": 5,
-            "unityPrice": 20,
-            "subtotal": 8
-          },
-          {
-            "name": "Barra Alpino 100g",
-            "qte": 8,
-            "unityPrice": 20,
-            "subtotal": 10
-          }
-        ]
-      },
-      {
-        "name": "Esperanca",
-        "distance": 5.8,
-        "total": 18,
-        "cartInstances": [
-          {
-            "name": "Toddinho 200 ml",
-            "qte": 5,
-            "unityPrice": 20,
-            "subtotal": 8
-          },
-          {
-            "name": "Barra Alpino 100g",
-            "qte": 8,
-            "unityPrice": 20,
-            "subtotal": 10
-          }
-        ]
-      }
-    ]
-  }
-  
+  const { markets, handleMarket } = useMarketContext();
+  console.log(markets);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -149,16 +33,16 @@ const MarketsScreen = () => {
         isLoading ? <LoadingScreen /> :
           <View style={{ height: 340 }}>
             <FlatList
-              data={data.Markets}
+              data={markets}
               renderItem={({ item }) => (
                 <View style={styles.option2}>
                   <Text style={{ flex: 1, flexDirection: 'col', left: 80 }}>
                     {item.name}
 
                   </Text>
-                  <Text style={{ flex: 1, flexDirection: 'col', left: 80 }}>
+                  {/* <Text style={{ flex: 1, flexDirection: 'col', left: 80 }}>
                     {item.distance} km
-                  </Text>
+                  </Text> */}
                   <Text style={{ right: 50, position: 'absolute', fontSize: 20 }}>
                     R$ {item.total}
                   </Text>

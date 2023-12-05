@@ -5,7 +5,6 @@ export const useDetailContext = () => useContext(DetailContext);
 
 export const DetailProvider = ({ children }) => {
   const [detail, setDetail] = useState([]);
-  console.log(detail)
   const handleDetail= (det) => {
     setDetail(det);
   };

@@ -4,7 +4,7 @@ import styles from '../styles';
 import { Ionicons,  MaterialIcons, AntDesign  } from '@expo/vector-icons';
 import { useNavigation} from '@react-navigation/native';
 import Title from '../title';
-import { useDetailContext } from '../detailContext';
+import { useDetailContext } from '../context/detailContext';
 
 const DetailsScreen = () => {
     const navigation = useNavigation();

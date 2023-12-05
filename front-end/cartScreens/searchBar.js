@@ -4,8 +4,8 @@ import styles from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Ionicons } from '@expo/vector-icons';
 import Tutorial from './tutorial';
-import { useGlobalContext } from '../context';
-import { useGlobalContextLoc } from '../locationContext';
+import { useGlobalContext } from '../context/context';
+import { useGlobalContextLoc } from '../context/locationContext';
 
 
 function SearchBarWithOptions() {
@@ -15,38 +15,31 @@ function SearchBarWithOptions() {
   // Simulated list of options for demonstration
   const { list, addElement,removeElement } = useGlobalContext();
   const {location,getCurrentLocation} = useGlobalContextLoc();
-  const data = {
-    "productList":[
-            {
-                "name":"Achocolatado",
-                "imageSampleUrl": "acho.png",
-                "unity":"ml",
-                "qtd":200,
-                "unities":1
-            },
-            {
-                "name":"Chocolate",
-                "imageSampleUrl": "choco.png",
-                "unity":"grams",
-                "qtd":175,
-                "unities":1
-            }
-        ]
-}
-
 
 
   // Function to filter options based on search text
   const filterOptions = (text) => {
-    const filteredOptions = data.productList.filter((product) => {
-      if (text !== '' && product.name.toLowerCase().includes(text.toLowerCase()))
-          return product
-      else {
-        setShowList(false)
-        return null
-      }
+    setShowList(false);
+    if (text === '') {
+      return;
+    }
+    const apiBody = {'userSearch':text};
+    const apiUrl = 'http://127.0.0.1:5000/server/search-product-type';
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(apiBody),
     })
-    setOptions(filteredOptions);
+      .then((response) => response.json())
+      .then((data) => {
+        setOptions(data.productList);
+        setShowList(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   
   const handleSearch = (text) => {
@@ -54,7 +47,6 @@ function SearchBarWithOptions() {
     setSearchText(text);
     filterOptions(text);
   };
-  console.log(list)
 
   return (
     <View >
@@ -79,8 +71,8 @@ function SearchBarWithOptions() {
               data={options}
               renderItem={({ item }) => (
                 <View style={styles.option}>
-                  <Text >
-                    {item.name} {item.qtd} {item.unity}
+                  <Text style={{fontSize: 13}}>
+                    {item.name}
                   </Text>
 
                   <TouchableOpacity style={styles.plus} onPress={() => addElement(item)}>
@@ -92,7 +84,6 @@ function SearchBarWithOptions() {
               keyExtractor={(item) => item}
             />
           </View>
-            
       }
     </View>
   );

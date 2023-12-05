@@ -6,11 +6,12 @@ from flask import (
 from sqlalchemy import text
 from . import db as DB
 from . import utils as UTILS
+from flask_cors import CORS
 
 
 # Create blueprint for views used in recommendation logic
 bp = Blueprint("server", __name__, url_prefix="/server")
-
+CORS(bp) 
 
 @bp.route("/search-product-type", methods=("GET", "POST"))
 def search_product_type():
@@ -47,7 +48,7 @@ def search_product_type():
             - For invalid request method:
                 {"error": "Invalid request method"}
     """
-    if "GET" == request.method:
+    if "POST" == request.method:
         json_data = request.get_json()
         if not json_data or "userSearch" not in json_data:
             return jsonify({"error": "Invalid JSON format"})
@@ -66,6 +67,7 @@ def search_product_type():
         results = db.execute(
             text(query_prod_type), {"user_search": f"%{user_search}%"}
         ).fetchall()
+        
 
         query_imgs = """
             SELECT INST.logo_url
@@ -105,7 +107,7 @@ def search_product_type():
 
 @bp.route("/recommend-markets", methods=("GET", "POST"))
 def recommend_markets():
-    if "GET" == request.method:
+    if "POST" == request.method:
         json_data = request.get_json()
         if (
             not json_data
@@ -124,7 +126,6 @@ def recommend_markets():
         db = DB.get_db()
 
         result_markets = db.execute(text(query_get_markets)).fetchall()
-
         markets = [
             {
                 "name": result[0],
@@ -183,4 +184,8 @@ def recommend_markets():
 @bp.route("/search-alternative-product-instances", methods=("GET", "POST"))
 def search_alternative_product_instances():
     if "GET" == request.method:
-        return "Request received, response sent."
+        db = DB.get_db()
+        if db:
+            return "Request received, response sent."
+        else:
+            return "Request not received, response sent."

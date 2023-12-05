@@ -4,11 +4,15 @@ import { View, Text, Pressable, FlatList, TouchableOpacity, ScrollView } from 'r
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Title from '../title';
-import { useGlobalContext } from '../context';
+import { useGlobalContext } from '../context/context';
+import { useMarketContext } from '../context/marketContext';	
+import { useGlobalContextLoc } from '../context/locationContext';
 
 function ListScreen() {
   const navigation = useNavigation();
+  const {location,getCurrentLocation} = useGlobalContextLoc();
   const { list, addElement, removeElement } = useGlobalContext();
+  const { market, handleMarket } = useMarketContext();
   return (
     <View style={styles.container}>
       <Title />
@@ -19,7 +23,7 @@ function ListScreen() {
           renderItem={({ item }) => (
             <View style={styles.option}>
               <Text >
-                 {item.unities} X {item.name} {item.qtd} {item.unity} 
+                {item.unities} X {item.name} {item.qtd} {item.unity}
               </Text>
               <TouchableOpacity style={styles.plus} onPress={() => removeElement(item)}>
                 <Ionicons name="remove-circle-outline" size={20} color="black" />
@@ -30,7 +34,7 @@ function ListScreen() {
           keyExtractor={(item) => item}
         />
       </View>
-      
+
 
 
       <View style={styles.buttonBoxRight2}>
@@ -49,7 +53,10 @@ function ListScreen() {
 
       <TouchableOpacity
         style={styles.buttonToOptions}
-        onPress={() => navigation.navigate('MarketsScreen')}
+        onPress={() => {
+          navigation.navigate('MarketsScreen');
+          handleMarket(list,location);
+        }}
       >
         <Text style={styles.text}>Quero comprar barato</Text>
         <Ionicons name="star" size={20} color="black" style={{ position: 'absolute', right: 10 }} />
