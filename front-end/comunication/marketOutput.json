@@ -1,0 +1,42 @@
+{
+    "Markets":[
+        {
+            "name":"Carrefour",
+            "distance": 4.3,
+            "total": 24,
+            "cartInstances":[
+                {
+                    "name":"Toddinho 200 ml",
+                    "qte":2,
+                    "unityPrice":20,
+                    "subtotal":10
+                },
+                {
+                    "name":"Barra garoto 200g",
+                    "qte":3,
+                    "unityPrice":20,
+                    "subtotal":14
+                }
+            ]
+        },
+        {
+            "name":"Esperanca",
+            "distance": 5.8,
+            "total": 18,
+            "cartInstances":[
+                {
+                    "name":"Toddinho 200 ml",
+                    "qte":5,
+                    "unityPrice":20,
+                    "subtotal":8
+                },
+                {
+                    "name":"Barra Alpino 100g",
+                    "qte":8,
+                    "unityPrice":20,
+                    "subtotal":10
+                }
+            ]
+        }
+    ]
+}
